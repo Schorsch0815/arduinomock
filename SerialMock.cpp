@@ -120,7 +120,7 @@ size_t SerialMock::print(unsigned char pValue, int pBase)
 
 size_t SerialMock::print(int pValue, int pBase)
 {
-    return printf( (0 >= sgn(pValue)) ? "-" : "") + print(pValue*sgn(pValue),pBase);
+    return printf( (0 >= sgn(pValue)) ? "-" : "") + print(((unsigned long)pValue*sgn(pValue)),pBase);
 }
 
 size_t SerialMock::print(unsigned int pValue, int pBase)
@@ -131,7 +131,7 @@ size_t SerialMock::print(unsigned int pValue, int pBase)
 
 size_t SerialMock::print(long pValue, int pBase)
 {
-    return printf( (0 >= sgn(pValue)) ? "-" : "") + print(pValue*sgn(pValue),pBase);
+    return printf( (0 >= sgn(pValue)) ? "-" : "") + print(((unsigned long)pValue*sgn(pValue)),pBase);
 }
 
 size_t SerialMock::print(unsigned long pValue, int pBase)
