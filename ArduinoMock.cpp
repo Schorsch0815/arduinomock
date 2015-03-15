@@ -81,11 +81,3 @@ void delay(long ms)
     return -1;
 #endif
 }
-
-//void delay(unsigned long ms)
-//{
-//    unsigned long start = millis();
-//    while (millis() - start < ms)
-//    {
-//    }
-//}
