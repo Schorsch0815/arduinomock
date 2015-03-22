@@ -24,7 +24,6 @@
 #include <cstdlib>
 #include <stdint.h>
 
-
 enum
 {
     DEC = 10, HEX = 16, OCT = 8, BIN = 2
@@ -89,8 +88,15 @@ public:
     }
 
 private:
-    char *convertNumber(unsigned long pNumber, int pBase, char *pBuffer);
+    size_t print(long pNumber, int pBase, int pNumBits, bool pNewLine);
+    size_t print(unsigned long pNumber, int pBase, int pNumBits, bool pNewLine);
 
+    char *convertNumber(unsigned long pNumber, int pBase, int pNumBits, char *pBuffer, bool pNewLine);
+
+    const int NUMBER_OF_BITS_FOR_LONG = sizeof(long) * 8;
+    const int NUMBER_OF_BITS_FOR_INT = sizeof(int) * 8;
+    const int NUMBER_OF_BITS_FOR_SHORT = sizeof(short) * 8;
+    const int NUMBER_OF_BITS_FOR_CHAR = sizeof(char) * 8;
 };
 
 extern SerialMock Serial;

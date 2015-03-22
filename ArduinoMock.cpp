@@ -25,13 +25,15 @@
 
 #include <sys/timeb.h>
 #include <iostream>
+#include <stdexcept>
+
 //#include <cstdlib>
 //#include <sys/time.h>
 //#include <cstdio>
 
 #if defined(WIN32)
 #include <windows.h>
-#elif defined(__UNIX__)
+#elif defined(__linux__)
 #include <unistd.h>
 #else
 #endif
@@ -55,8 +57,6 @@ long millis()
     return (lCurrent.time - sInitialTime.time) * 1000 + (lCurrent.millitm - sInitialTime.millitm);
 }
 
-#include <windows.h>
-
 void delay(long ms)
 {
 #if 0
@@ -74,10 +74,34 @@ void delay(long ms)
     SetLastError(0);
     Sleep(ms);
     cerr << "Windows error:" << (GetLastError() ? -1 : 0) << endl;
-#elif defined(LINUX)
+#elif defined(__linux__)
     usleep(1000 * ms);
 #else
 #error ("no milli sleep available for platform")
     return -1;
 #endif
+}
+
+long map(long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh)
+{
+    long lDeltaFrom = pFromHigh - pFromLow;
+    long lDeltaTo = pToHigh - pToLow;
+
+    if (0 > lDeltaTo)
+    {
+        cerr << "(EE) Range of 'To' values is negative: " << lDeltaTo << endl;
+        throw range_error( "Range error: ToLow > ToHigh.");
+    }
+    if (0 > lDeltaFrom)
+    {
+        cerr << "(EE) Range of 'From' values is negative: " << lDeltaFrom << endl;
+        throw range_error( "Range error: FromLow > FromHigh.");
+    } else if (0 == lDeltaFrom)
+    {
+        cerr << "(EE) division by zero." << endl;
+        throw runtime_error("Division by zero.");
+    }
+
+    long lResult = pValue * lDeltaTo / lDeltaFrom;
+    return lResult;
 }

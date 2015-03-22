@@ -22,19 +22,17 @@
 
 #include <cstdio>
 #include <cstring>
-#include <cmath>
-#include <exception>
+#include <stdexcept>
 
-//#include <cstring>
-//#include <iostream>
-//#include <iomanip>
-
+using namespace std;
 
 SerialMock Serial;
 
-template <typename T> int sgn(T val) {
-    return (T(0) < val) - (val < T(0));
-}
+template<typename T>
+    int sgn(T val)
+    {
+        return (T(0) < val) - (val < T(0));
+    }
 
 SerialMock::SerialMock()
 {
@@ -114,48 +112,46 @@ size_t SerialMock::print(char pChar)
 
 size_t SerialMock::print(unsigned char pValue, int pBase)
 {
-    char lBuffer[4];
-    return printf( "%s", convertNumber(pValue, pBase, lBuffer));
+    return print((unsigned long) pValue, pBase, NUMBER_OF_BITS_FOR_CHAR, false);
 }
 
 size_t SerialMock::print(int pValue, int pBase)
 {
-    return printf( (0 >= sgn(pValue)) ? "-" : "") + print(((unsigned long)pValue*sgn(pValue)),pBase);
+    return print((long) pValue, pBase, NUMBER_OF_BITS_FOR_INT, false);
 }
 
 size_t SerialMock::print(unsigned int pValue, int pBase)
 {
-    char lBuffer[10];
-    return printf( "%s", convertNumber(pValue, pBase, lBuffer));
+    return print((unsigned long) pValue, pBase, NUMBER_OF_BITS_FOR_LONG, false);
 }
 
 size_t SerialMock::print(long pValue, int pBase)
 {
-    return printf( (0 >= sgn(pValue)) ? "-" : "") + print(((unsigned long)pValue*sgn(pValue)),pBase);
+    return print(pValue, pBase, NUMBER_OF_BITS_FOR_LONG, false);
 }
 
 size_t SerialMock::print(unsigned long pValue, int pBase)
 {
-    char lBuffer[20];
-    return printf( "%s", convertNumber(pValue, pBase, lBuffer));
+    return print(pValue, pBase, NUMBER_OF_BITS_FOR_LONG, false);
 }
 
 size_t SerialMock::print(double pValue, int pPrecision)
 {
-    return printf( "%.*lf", pPrecision, pValue);
+    return printf("%.*lf", pPrecision, pValue);
 }
 
 //    size_t print(const Printable&);
 
 //    size_t println(const String &s);
+
 size_t SerialMock::println(const char pString[])
 {
-    return print(pString) + println();
+    return printf("%s\n", pString);
 }
 
 size_t SerialMock::println(char pChar)
 {
-    return print(pChar) + println();
+    return printf("%c\n", pChar);
 }
 
 size_t SerialMock::println(unsigned char pValue, int pBase)
@@ -165,22 +161,22 @@ size_t SerialMock::println(unsigned char pValue, int pBase)
 
 size_t SerialMock::println(int pValue, int pBase)
 {
-    return print(pValue, pBase) + println();
+    return print((long) pValue, pBase, NUMBER_OF_BITS_FOR_INT, true);
 }
 
 size_t SerialMock::println(unsigned int pValue, int pBase)
 {
-    return print(pValue, pBase) + println();
+    return print((unsigned long) pValue, pBase, NUMBER_OF_BITS_FOR_INT, true);
 }
 
 size_t SerialMock::println(long pValue, int pBase)
 {
-    return print(pValue, pBase) + println();
+    return print(pValue, pBase, NUMBER_OF_BITS_FOR_LONG, true);
 }
 
 size_t SerialMock::println(unsigned long pValue, int pBase)
 {
-    return print(pValue, pBase) + println();
+    return print(pValue, pBase, NUMBER_OF_BITS_FOR_LONG, true);
 }
 
 size_t SerialMock::println(double pValue, int pPrecision)
@@ -194,11 +190,41 @@ size_t SerialMock::println(void)
     return printf("\n");
 }
 
-char *SerialMock::convertNumber(unsigned long pNumber, int pBase, char *pBuffer)
+size_t SerialMock::print(long pNumber, int pBase, int pNumBits, bool pNewLine)
+{
+    char lBuffer[100];
+
+    if (pBase == DEC)
+    {
+        return printf(
+                "%s%s",
+                (0 > sgn(pNumber)) ? "-" : "",
+                convertNumber(((unsigned long) pNumber * sgn(pNumber)), pBase,
+                              pNumBits, lBuffer, pNewLine));
+    }
+    else
+    {
+        return printf(
+                "%s",
+                convertNumber((unsigned long) pNumber, pBase, pNumBits, lBuffer,
+                              pNewLine));
+    }
+}
+
+size_t SerialMock::print(unsigned long pNumber, int pBase, int pNumBits,
+                         bool pNewLine)
+{
+    char lBuffer[100];
+
+    return printf("%s",
+                  convertNumber(pNumber, pBase, pNumBits, lBuffer, pNewLine));
+}
+
+char *SerialMock::convertNumber(unsigned long pNumber, int pBase, int pNumBits,
+                                char *pBuffer, bool pNewLine)
 {
     static char sBuffer[65];
-    static char sHex[6] =
-        { 'A', 'B', 'C', 'D', 'E', 'F' };
+    static char sHex[6] = { 'A', 'B', 'C', 'D', 'E', 'F' };
     unsigned int lShift;
     unsigned long lMask;
     int lValue;
@@ -225,9 +251,10 @@ char *SerialMock::convertNumber(unsigned long pNumber, int pBase, char *pBuffer)
 
     if (DEC != pBase)
     {
-        sBuffer[64] = '\0';
-        char *lStart = &(sBuffer[64]);
-        for (unsigned int i = 63; i >= 0 && 0 != pNumber; --i, --lStart)
+        int lPos = pNumBits / lShift +(0 != (pNumBits % lShift));
+        sBuffer[lPos] = '\0';
+        char *lStart = &(sBuffer[lPos-1]);
+        for (int i = lPos-1; i >= 0; --i, --lStart)
         {
             lValue = pNumber & lMask;
             pNumber >>= lShift;
@@ -241,11 +268,16 @@ char *SerialMock::convertNumber(unsigned long pNumber, int pBase, char *pBuffer)
                 sBuffer[i] = sHex[lValue - 10];
             }
         }
-        strcpy(pBuffer, lStart);
+
+        strcpy(pBuffer, ++lStart);
+        if (pNewLine)
+        {
+            strcat(pBuffer, "\n");
+        }
     }
     else
     {
-        sprintf(pBuffer, "%lu", pNumber);
+        sprintf(pBuffer, "%lu%s", pNumber, (pNewLine ? "\n" : ""));
     }
     return pBuffer;
 }
