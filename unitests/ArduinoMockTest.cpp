@@ -24,7 +24,6 @@ TEST(ArduinoMockTest,MillisDelay)
     EXPECT_LE(500,t2-t1);
 }
 
-
 TEST(ArduinoMocktest,Map)
 {
     EXPECT_EQ(50,map(50,0,100,0,100));
