@@ -54,6 +54,6 @@ long millis();
 
 void delay(long pMilliseconds);
 
-long map(long, long, long, long, long);
+long map(long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh);
 
 #endif

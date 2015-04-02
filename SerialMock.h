@@ -91,7 +91,11 @@ private:
     size_t print(long pNumber, int pBase, int pNumBits, bool pNewLine);
     size_t print(unsigned long pNumber, int pBase, int pNumBits, bool pNewLine);
 
+    char convertDigit(int lValue);
+
     char *convertNumber(unsigned long pNumber, int pBase, int pNumBits, char *pBuffer, bool pNewLine);
+    void determineShftAndMask(int pBase, unsigned int& lShift,
+                              unsigned long & lMask);
 
     const int NUMBER_OF_BITS_FOR_LONG = sizeof(long) * 8;
     const int NUMBER_OF_BITS_FOR_INT = sizeof(int) * 8;

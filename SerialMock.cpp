@@ -220,15 +220,9 @@ size_t SerialMock::print(unsigned long pNumber, int pBase, int pNumBits,
                   convertNumber(pNumber, pBase, pNumBits, lBuffer, pNewLine));
 }
 
-char *SerialMock::convertNumber(unsigned long pNumber, int pBase, int pNumBits,
-                                char *pBuffer, bool pNewLine)
+void SerialMock::determineShftAndMask(int pBase, unsigned int& lShift,
+                                      unsigned long & lMask)
 {
-    static char sBuffer[65];
-    static char sHex[6] = { 'A', 'B', 'C', 'D', 'E', 'F' };
-    unsigned int lShift;
-    unsigned long lMask;
-    int lValue;
-
     switch (pBase)
     {
         case BIN:
@@ -248,6 +242,30 @@ char *SerialMock::convertNumber(unsigned long pNumber, int pBase, int pNumBits,
         default:
             throw std::exception();
     }
+}
+
+char SerialMock::convertDigit(int lValue)
+{
+    static char sHex[6] = { 'A', 'B', 'C', 'D', 'E', 'F' };
+
+    if (lValue < 10)
+    {
+        return '0' + lValue;
+    }
+    else
+    {
+        return sHex[lValue - 10];
+    }
+}
+
+char *SerialMock::convertNumber(unsigned long pNumber, int pBase, int pNumBits,
+                                char *pBuffer, bool pNewLine)
+{
+    static char sBuffer[65];
+    unsigned int lShift;
+    unsigned long lMask;
+
+    determineShftAndMask(pBase, lShift, lMask);
 
     if (DEC != pBase)
     {
@@ -256,18 +274,11 @@ char *SerialMock::convertNumber(unsigned long pNumber, int pBase, int pNumBits,
         char *lStart = &(sBuffer[lPos-1]);
         for (int i = lPos-1; i >= 0; --i, --lStart)
         {
-            lValue = pNumber & lMask;
+            int lValue = pNumber & lMask;
             pNumber >>= lShift;
 
-            if (lValue < 10)
-            {
-                sBuffer[i] = '0' + lValue;
-            }
-            else
-            {
-                sBuffer[i] = sHex[lValue - 10];
-            }
-        }
+            sBuffer[i] = convertDigit(lValue);
+       }
 
         strcpy(pBuffer, ++lStart);
         if (pNewLine)

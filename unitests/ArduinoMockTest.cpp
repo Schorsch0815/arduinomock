@@ -12,7 +12,7 @@
 
 using namespace std;
 
-TEST(ArduinoMockTest,MillisDelay)
+GTEST_TEST(ArduinoMockTest,MillisDelay)
 {
     long t1 = millis();
     long t2 = millis();
@@ -26,13 +26,19 @@ TEST(ArduinoMockTest,MillisDelay)
 
 TEST(ArduinoMocktest,Map)
 {
+    EXPECT_EQ(0,map(50,50,100,0,5));
+
+    EXPECT_EQ(-10,map(50,0,100,-100,80));
+
+    EXPECT_EQ(-5,map(-5,-100,100,-10,0));
+
     EXPECT_EQ(50,map(50,0,100,0,100));
 
     EXPECT_EQ(50,map(10,0,20,0,100));
 
     EXPECT_EQ(5,map(99,0,99,0,5));
 
-    EXPECT_EQ(5,map(99,0,99,0,5));
+    EXPECT_THROW(map(-10,0,100,-100,80),range_error);
 
     EXPECT_THROW(map(1,10,0,0,10),range_error);
 

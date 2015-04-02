@@ -87,21 +87,25 @@ long map(long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh)
     long lDeltaFrom = pFromHigh - pFromLow;
     long lDeltaTo = pToHigh - pToLow;
 
+    if (pValue < pFromLow || pValue > pFromHigh)
+    {
+        throw range_error( "Range error: pValue is not between pFromLow and pFromHigh.");
+    }
     if (0 > lDeltaTo)
     {
-        cerr << "(EE) Range of 'To' values is negative: " << lDeltaTo << endl;
+        // cerr << "(EE) Range of 'To' values is negative: " << lDeltaTo << endl;
         throw range_error( "Range error: ToLow > ToHigh.");
     }
     if (0 > lDeltaFrom)
     {
-        cerr << "(EE) Range of 'From' values is negative: " << lDeltaFrom << endl;
+        // cerr << "(EE) Range of 'From' values is negative: " << lDeltaFrom << endl;
         throw range_error( "Range error: FromLow > FromHigh.");
     } else if (0 == lDeltaFrom)
     {
-        cerr << "(EE) division by zero." << endl;
+        // cerr << "(EE) division by zero." << endl;
         throw runtime_error("Division by zero.");
     }
 
-    long lResult = pValue * lDeltaTo / lDeltaFrom;
+    long lResult = (((double)pValue - pFromLow) * lDeltaTo / lDeltaFrom) + pToLow;
     return lResult;
 }
