@@ -1,12 +1,12 @@
 /*--------------------------------------------------------------------
- * This file is part of the ArduinoMock library.
+ * This file is part of the arduinomock library.
  *
- * RcCarLights is free software: you can redistribute it and/or modify
+ * arduinomock is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * RcCarLights is distributed in the hope that it will be useful,
+ * arduinomock is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -14,14 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with RcCarLights.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright: Jochen Schales 2014
+ * Copyright: Jochen Schales 2015
  *
  * --------------------------------------------------------------------*/
 
 #ifndef ARDUINO_MOCK_H
 #define ARDUINO_MOCK_H
-
-#include "SerialMock.h"
 
 // some defines from Arduino.h
 #ifdef abs
