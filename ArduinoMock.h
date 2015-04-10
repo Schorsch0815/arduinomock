@@ -21,14 +21,26 @@
 #ifndef ARDUINO_MOCK_H
 #define ARDUINO_MOCK_H
 
+// include uint8_t etc
+#include <stdint.h>
+
+// include min/max
+#include <algorithm>
+
 // some defines from Arduino.h
-#ifdef abs
-#undef abs
+/*
+#ifndef min
+#define min(a,b) ((a)<(b)?(a):(b))
 #endif
 
-//#define min(a,b) ((a)<(b)?(a):(b))
-//#define max(a,b) ((a)>(b)?(a):(b))
+#ifndef max
+#define max(a,b) ((a)>(b)?(a):(b))
+#endif
+
+#ifndef abs
 #define abs(x) ((x)>0?(x):-(x))
+#endif
+*/
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 #define radians(deg) ((deg)*DEG_TO_RAD)
