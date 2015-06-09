@@ -97,7 +97,7 @@ private:
     void determineShftAndMask(int pBase, unsigned int& lShift,
                               unsigned long & lMask);
 
-    const int NUMBER_OF_BITS_FOR_LONG = sizeof(long) * 8;
+    const static int NUMBER_OF_BITS_FOR_LONG = sizeof(long) * 8;
     const int NUMBER_OF_BITS_FOR_INT = sizeof(int) * 8;
     const int NUMBER_OF_BITS_FOR_SHORT = sizeof(short) * 8;
     const int NUMBER_OF_BITS_FOR_CHAR = sizeof(char) * 8;

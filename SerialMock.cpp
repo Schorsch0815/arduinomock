@@ -19,6 +19,7 @@
  * --------------------------------------------------------------------*/
 
 #include "ArduinoMock.h"
+#include "SerialMock.h"
 
 #include <cstdio>
 #include <cstring>
