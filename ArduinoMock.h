@@ -21,6 +21,19 @@
 #ifndef ARDUINO_MOCK_H
 #define ARDUINO_MOCK_H
 
+#include <stdint.h>
+#ifdef __cplusplus
+extern "C"{
+#endif
+
+// need to be adapted according arduino settings
+#define HIGH	0x1
+#define LOW		0x0
+
+
+#define INPUT 0x0
+#define OUTPUT 0x1
+
 // some defines from Arduino.h
 #ifdef abs
 #undef abs
@@ -48,10 +61,23 @@ typedef unsigned int word;
 typedef unsigned char boolean;
 typedef unsigned char byte;
 
-long millis();
+void pinMode(uint8_t, uint8_t);
+void digitalWrite(uint8_t, uint8_t);
+int digitalRead(uint8_t);
+int analogRead(uint8_t);
+void analogReference(uint8_t mode);
+void analogWrite(uint8_t, int);
 
-void delay(long pMilliseconds);
+unsigned long millis();
+unsigned long micros();
+void delay(unsigned long pMilliseconds);
+void delayMicroseconds(unsigned long pMicroseconds);
+unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
 
 long map(long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh);
+
+#ifdef __cplusplus
+} // extern C
+#endif
 
 #endif
