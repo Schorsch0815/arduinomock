@@ -12,16 +12,38 @@
 
 using namespace std;
 
+static unsigned long MILLI_SEC_DELAY_TEST = 500;
+static unsigned long MILLI_SEC_DELAY_DEVIATION = 5;
+
+static unsigned long MICRO_SEC_DELAY_TEST = 900;
+static unsigned long MICRO_SEC_DELAY_DEVIATION = 300;
+
 GTEST_TEST(ArduinoMockTest,MillisDelay)
 {
-    long t1 = millis();
-    long t2 = millis();
+    unsigned long t1 = millis();
+    unsigned long t2 = millis();
     EXPECT_LE(t1,t2);
 
     t1 = millis();
-    delay(500);
+    delay(MILLI_SEC_DELAY_TEST);
     t2 = millis();
-    EXPECT_LE(500,t2-t1);
+    EXPECT_LE(MILLI_SEC_DELAY_TEST,t2-t1);
+    EXPECT_GT(MILLI_SEC_DELAY_DEVIATION,t2-t1 - MILLI_SEC_DELAY_TEST);
+    printf("deviation = %lu\n", t2-t1 - MILLI_SEC_DELAY_TEST );
+}
+
+GTEST_TEST(ArduinoMockTest,MicrosDelay)
+{
+    long t1 = micros();
+    long t2 = micros();
+    EXPECT_LE(t1,t2);
+
+    t1 = micros();
+    delayMicroseconds(MICRO_SEC_DELAY_TEST);
+    t2 = micros();
+    EXPECT_LE(MICRO_SEC_DELAY_TEST,t2-t1);
+    EXPECT_GT(MICRO_SEC_DELAY_DEVIATION,t2-t1 - MICRO_SEC_DELAY_TEST);
+    printf("deviation = %lu\n", t2-t1 - MICRO_SEC_DELAY_TEST );
 }
 
 TEST(ArduinoMocktest,Map)

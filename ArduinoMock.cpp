@@ -24,6 +24,7 @@
 #undef max
 
 #include <sys/timeb.h>
+#include <sys/time.h>
 #include <iostream>
 #include <stdexcept>
 
@@ -41,8 +42,12 @@
 using namespace std;
 
 static timeb & initializeTime();
+static struct timeval & initializeTimeVal();
 
 static timeb sInitialTime = initializeTime();
+
+static struct timeval sInitialTimeVal = initializeTimeVal();
+
 
 timeb & initializeTime()
 {
@@ -50,35 +55,59 @@ timeb & initializeTime()
     return sInitialTime;
 }
 
-long millis()
+struct timeval & initializeTimeVal()
+{
+    gettimeofday(&sInitialTimeVal,NULL);
+    return sInitialTimeVal;
+}
+
+
+unsigned long millis()
 {
     timeb lCurrent;
     ftime(&lCurrent);
-    return (lCurrent.time - sInitialTime.time) * 1000 + (lCurrent.millitm - sInitialTime.millitm);
+    return (lCurrent.time - sInitialTime.time) * 1000
+            + (lCurrent.millitm - sInitialTime.millitm);
 }
 
-void delay(long ms)
+void delay(unsigned long pMilliseconds)
 {
-#if 0
-    HANDLE timer;
-    LARGE_INTEGER ft;
-
-    ft.QuadPart = -(10*usec*1000); // Convert to 100 nanosecond interval, negative value indicates relative time
-
-    timer = CreateWaitableTimer(NULL, TRUE, NULL);
-    SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
-    WaitForSingleObject(timer, INFINITE);
-    CloseHandle(timer);
-#endif
 #if defined(WIN32)
+    SetLastError(0);
+    Sleep(pMilliseconds);
+    cerr << "Windows error:" << (GetLastError() ? -1 : 0) << endl;
+#elif defined(__linux__)
+    usleep(1000 * pMilliseconds);
+#else
+#error ("no milli sleep available for current platform")
+    return;
+#endif
+}
+
+unsigned long micros()
+{
+    struct timeval lTimeVal;
+
+    if (gettimeofday(&lTimeVal, NULL))
+    {
+        throw runtime_error( "Problem calling gettimeofday");
+    }
+
+    return (lTimeVal.tv_sec - sInitialTimeVal.tv_sec) * 1000000 + (lTimeVal.tv_usec -sInitialTimeVal.tv_usec);
+}
+
+void delayMicroseconds(unsigned long pMicroseconds)
+{
+#if 0 //defined(WIN32)
     SetLastError(0);
     Sleep(ms);
     cerr << "Windows error:" << (GetLastError() ? -1 : 0) << endl;
-#elif defined(__linux__)
-    usleep(1000 * ms);
+#endif
+#if defined(__linux__)
+    usleep(pMicroseconds);
 #else
-#error ("no milli sleep available for platform")
-    return -1;
+#error ("no micro sleep available for platform")
+    return;
 #endif
 }
 
@@ -89,23 +118,25 @@ long map(long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh)
 
     if (pValue < pFromLow || pValue > pFromHigh)
     {
-        throw range_error( "Range error: pValue is not between pFromLow and pFromHigh.");
+        throw range_error(
+                "Range error: pValue is not between pFromLow and pFromHigh.");
     }
     if (0 > lDeltaTo)
     {
         // cerr << "(EE) Range of 'To' values is negative: " << lDeltaTo << endl;
-        throw range_error( "Range error: ToLow > ToHigh.");
+        throw range_error("Range error: ToLow > ToHigh.");
     }
     if (0 > lDeltaFrom)
     {
         // cerr << "(EE) Range of 'From' values is negative: " << lDeltaFrom << endl;
-        throw range_error( "Range error: FromLow > FromHigh.");
+        throw range_error("Range error: FromLow > FromHigh.");
     } else if (0 == lDeltaFrom)
     {
         // cerr << "(EE) division by zero." << endl;
         throw runtime_error("Division by zero.");
     }
 
-    long lResult = (((double)pValue - pFromLow) * lDeltaTo / lDeltaFrom) + pToLow;
+    long lResult = (((double) pValue - pFromLow) * lDeltaTo / lDeltaFrom)
+            + pToLow;
     return lResult;
 }
