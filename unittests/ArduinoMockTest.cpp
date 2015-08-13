@@ -69,3 +69,55 @@ TEST(ArduinoMocktest,Map)
     EXPECT_THROW(map(1,0,0,0,10),runtime_error);
 }
 
+TEST(ArduinoMocktest,DigitalRead)
+{
+    EXPECT_EQ(0,digitalRead(0));
+    EXPECT_EQ(0,digitalRead(10));
+    EXPECT_EQ(0,digitalRead(20));
+}
+
+TEST(ArduinoMocktest,DigitalWrite)
+{
+    digitalWrite(0,0);
+    digitalWrite(10,0);
+    digitalWrite(20,0);
+}
+
+TEST(ArduinoMocktest,AnalogRead)
+{
+    EXPECT_EQ(0,analogRead(0));
+    EXPECT_EQ(0,analogRead(10));
+    EXPECT_EQ(0,analogRead(20));
+}
+
+TEST(ArduinoMocktest,AnalogWrite)
+{
+    analogWrite(0,0);
+    analogWrite(10,0);
+    analogWrite(20,0);
+}
+
+TEST(ArduinoMocktest,PinMode)
+{
+    pinMode(0,0);
+    pinMode(0,1);
+    pinMode(10,0);
+    pinMode(10,1);
+    pinMode(20,0);
+    pinMode(20,1);
+}
+
+TEST(ArduinoMocktest,PulseIn)
+{
+    EXPECT_EQ(0,pulseIn(0,0,100));
+    EXPECT_EQ(0,pulseIn(10,0,100));
+    EXPECT_EQ(0,pulseIn(20,0,100));
+}
+
+TEST(ArduinoMocktest,AnalogReference)
+{
+    analogReference(0);
+    analogReference(10);
+    analogReference(20);
+}
+

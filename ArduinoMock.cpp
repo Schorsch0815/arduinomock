@@ -161,3 +161,19 @@ long map(long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh)
             + pToLow;
     return lResult;
 }
+
+
+
+int digitalRead(uint8_t)
+{
+    return 0;
+}
+
+int analogRead(uint8_t)
+{
+    return 0;
+}
+
+void analogReference(uint8_t mode)
+{
+}
