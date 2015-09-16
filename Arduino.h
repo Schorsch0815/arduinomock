@@ -21,6 +21,8 @@
 #ifndef ARDUINO_H_
 #define ARDUINO_H_
 
+#include <cstdlib>
+
 #include "ArduinoMock.h"
 #include "SerialMock.h"
 

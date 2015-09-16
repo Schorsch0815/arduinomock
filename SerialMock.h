@@ -21,7 +21,6 @@
 #ifndef SerialMock_h
 #define SerialMock_h
 
-#include <cstdlib>
 #include <stdint.h>
 
 enum

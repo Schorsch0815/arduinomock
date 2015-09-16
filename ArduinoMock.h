@@ -22,6 +22,7 @@
 #define ARDUINO_MOCK_H
 
 #include <stdint.h>
+
 #ifdef __cplusplus
 extern "C"{
 #endif
@@ -35,19 +36,19 @@ extern "C"{
 #define OUTPUT 0x1
 
 // some defines from Arduino.h
-/*
-#ifndef min
-#define min(a,b) ((a)<(b)?(a):(b))
+
+#ifdef min
+#undef min
 #endif
+#define min(a,b) ((a)<(b)?(a):(b))
 
 #ifndef max
+#undef max
+#endif
 #define max(a,b) ((a)>(b)?(a):(b))
-#endif
 
-#ifndef abs
-#define abs(x) ((x)>0?(x):-(x))
-#endif
-*/
+typedef int myint_t;
+
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 #define radians(deg) ((deg)*DEG_TO_RAD)
