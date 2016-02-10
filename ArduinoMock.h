@@ -21,7 +21,7 @@
 #ifndef ARDUINO_MOCK_H
 #define ARDUINO_MOCK_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #ifdef __cplusplus
 extern "C"{
