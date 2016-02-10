@@ -23,14 +23,7 @@
 #undef min
 #undef max
 
-#include <sys/timeb.h>
-#include <sys/time.h>
 #include <iostream>
-#include <stdexcept>
-
-//#include <cstdlib>
-//#include <sys/time.h>
-//#include <cstdio>
 
 #if defined(WIN32)
 #include <windows.h>
@@ -41,36 +34,44 @@
 
 using namespace std;
 
-static timeb & initializeTime();
-static struct timeval & initializeTimeVal();
+ArduinoMock *ArduinoMock::mInstance = NULL;
 
-static timeb sInitialTime = initializeTime();
-
-static struct timeval sInitialTimeVal = initializeTimeVal();
-
-
-timeb & initializeTime()
+ArduinoMock::ArduinoMock() :
+        mTimerHandling( TIMER_HANDLING::REAL_TIMER_HANDLING ),
+        mMicroSeconds( 0 ),
+        mMilliSeconds( 0 )
 {
-    ftime(&sInitialTime);
-    return sInitialTime;
+    initializeTimers();
 }
 
-struct timeval & initializeTimeVal()
+ArduinoMock::~ArduinoMock()
 {
-    gettimeofday(&sInitialTimeVal,NULL);
-    return sInitialTimeVal;
+    mInstance = NULL;
+}
+
+ArduinoMock & ArduinoMock::getInstance()
+{
+    if (NULL == mInstance)
+    {
+        mInstance = new ArduinoMock();
+    }
+
+    return *mInstance;
+}
+
+void ArduinoMock::initializeTimers()
+{
+    ftime( &mInitialTime );
+    gettimeofday( &mInitialTimeVal, NULL );
 }
 
 
 unsigned long millis()
 {
-    timeb lCurrent;
-    ftime(&lCurrent);
-    return (lCurrent.time - sInitialTime.time) * 1000
-            + (lCurrent.millitm - sInitialTime.millitm);
+    return ArduinoMock::getInstance().getMilliSeconds();
 }
 
-void delay(unsigned long pMilliseconds)
+void delay( unsigned long pMilliseconds )
 {
 #if defined(WIN32)
     SetLastError(0);
@@ -86,17 +87,10 @@ void delay(unsigned long pMilliseconds)
 
 unsigned long micros()
 {
-    struct timeval lTimeVal;
-
-    if (gettimeofday(&lTimeVal, NULL))
-    {
-        throw runtime_error( "Problem calling gettimeofday");
-    }
-
-    return (lTimeVal.tv_sec - sInitialTimeVal.tv_sec) * 1000000 + (lTimeVal.tv_usec -sInitialTimeVal.tv_usec);
+    return ArduinoMock::getInstance().getMicroSeconds();
 }
 
-void delayMicroseconds(unsigned long pMicroseconds)
+void delayMicroseconds( unsigned long pMicroseconds )
 {
 #if 0 //defined(WIN32)
     SetLastError(0);
@@ -111,69 +105,65 @@ void delayMicroseconds(unsigned long pMicroseconds)
 #endif
 }
 
-
-void pinMode(uint8_t, uint8_t)
+void pinMode( uint8_t, uint8_t )
 {
 
 }
 
-void digitalWrite(uint8_t, uint8_t)
+void digitalWrite( uint8_t, uint8_t )
 {
 
 }
 
-void analogWrite(uint8_t, int)
+void analogWrite( uint8_t, int )
 {
 
 }
 
-unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
+unsigned long pulseIn( uint8_t pin, uint8_t state, unsigned long timeout )
 {
     return 0;
 }
 
-long map(long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh)
+long map( long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh )
 {
     long lDeltaFrom = pFromHigh - pFromLow;
     long lDeltaTo = pToHigh - pToLow;
 
     if (pValue < pFromLow || pValue > pFromHigh)
     {
-        throw range_error(
-                "Range error: pValue is not between pFromLow and pFromHigh.");
+        throw range_error( "Range error: pValue is not between pFromLow and pFromHigh." );
     }
     if (0 > lDeltaTo)
     {
         // cerr << "(EE) Range of 'To' values is negative: " << lDeltaTo << endl;
-        throw range_error("Range error: ToLow > ToHigh.");
+        throw range_error( "Range error: ToLow > ToHigh." );
     }
     if (0 > lDeltaFrom)
     {
         // cerr << "(EE) Range of 'From' values is negative: " << lDeltaFrom << endl;
-        throw range_error("Range error: FromLow > FromHigh.");
-    } else if (0 == lDeltaFrom)
+        throw range_error( "Range error: FromLow > FromHigh." );
+    }
+    else if (0 == lDeltaFrom)
     {
         // cerr << "(EE) division by zero." << endl;
-        throw runtime_error("Division by zero.");
+        throw runtime_error( "Division by zero." );
     }
 
-    long lResult = (((double) pValue - pFromLow) * lDeltaTo / lDeltaFrom)
-            + pToLow;
+    long lResult = (((double) pValue - pFromLow) * lDeltaTo / lDeltaFrom) + pToLow;
     return lResult;
 }
 
-
-
-int digitalRead(uint8_t)
+int digitalRead( uint8_t )
 {
     return 0;
 }
 
-int analogRead(uint8_t)
+int analogRead( uint8_t )
 {
     return 0;
 }
 
-void analogReference(uint8_t mode)
+void analogReference( uint8_t mode )
 {
 }
