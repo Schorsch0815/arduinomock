@@ -22,6 +22,93 @@
 #define ARDUINO_MOCK_H
 
 #include <cstdint>
+#include <stdexcept>
+#include <sys/timeb.h>
+#include <sys/time.h>
+
+class ArduinoMock
+{
+public:
+    ~ArduinoMock();
+    static ArduinoMock & getInstance();
+
+    typedef enum
+    {
+        REAL_TIMER_HANDLING,
+        MANUAL_TIMER_HANDLING
+    } TIMER_HANDLING;
+
+    void setTimerMode( TIMER_HANDLING pTimerHandling )
+    {
+        mTimerHandling = pTimerHandling;
+    }
+
+    TIMER_HANDLING getTimerHandling() const
+    {
+        return mTimerHandling;
+    }
+
+    unsigned long getMicroSeconds() const
+    {
+        if (MANUAL_TIMER_HANDLING == getTimerHandling())
+        {
+            return mMicroSeconds;
+        }
+        else
+        {
+            struct timeval lTimeVal;
+
+            if (gettimeofday( &lTimeVal, NULL ))
+            {
+                throw std::runtime_error( "Problem calling gettimeofday" );
+            }
+
+            return (lTimeVal.tv_sec - mInitialTimeVal.tv_sec) * 1000000 + (lTimeVal.tv_usec - mInitialTimeVal.tv_usec);
+        }
+    }
+
+    void setMicroSeconds( unsigned long microSeconds )
+    {
+        mMicroSeconds = microSeconds;
+    }
+
+    unsigned long getMilliSeconds() const
+    {
+        if (MANUAL_TIMER_HANDLING == getTimerHandling())
+        {
+            return mMilliSeconds;
+        }
+        else
+        {
+            timeb lCurrent;
+            ftime( &lCurrent );
+            return (lCurrent.time - mInitialTime.time) * 1000 + (lCurrent.millitm - mInitialTime.millitm);
+        }
+    }
+
+    void setMilliSeconds( unsigned long milliSeconds )
+    {
+        mMilliSeconds = milliSeconds;
+    }
+
+private:
+    ArduinoMock();
+
+    void initializeTimers();
+
+    static ArduinoMock *mInstance;
+
+    TIMER_HANDLING mTimerHandling;
+
+    unsigned long mMicroSeconds;
+
+    unsigned long mMilliSeconds;
+
+    timeb mInitialTime;
+
+    struct timeval mInitialTimeVal;
+
+};
 
 #ifdef __cplusplus
 extern "C"{
