@@ -37,7 +37,7 @@ using namespace std;
 ArduinoMock *ArduinoMock::mInstance = NULL;
 
 ArduinoMock::ArduinoMock() :
-        mTimerHandling( TIMER_HANDLING::REAL_TIMER_HANDLING ),
+        mTimerHandling( REAL_TIMER_HANDLING ),
         mMicroSeconds( 0 ),
         mMilliSeconds( 0 )
 {

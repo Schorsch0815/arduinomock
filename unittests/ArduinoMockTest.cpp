@@ -18,7 +18,7 @@ static unsigned long MILLI_SEC_DELAY_DEVIATION = 5;
 static unsigned long MICRO_SEC_DELAY_TEST = 900;
 static unsigned long MICRO_SEC_DELAY_DEVIATION = 300;
 
-GTEST_TEST(ArduinoMockTest,MillisDelay)
+GTEST_TEST(ArduinoMockTest,RealMillisDelay)
 {
     unsigned long t1 = millis();
     unsigned long t2 = millis();
@@ -27,12 +27,13 @@ GTEST_TEST(ArduinoMockTest,MillisDelay)
     t1 = millis();
     delay(MILLI_SEC_DELAY_TEST);
     t2 = millis();
+    EXPECT_LT(t1,t2);
     EXPECT_LE(MILLI_SEC_DELAY_TEST,t2-t1);
     EXPECT_GT(MILLI_SEC_DELAY_DEVIATION,t2-t1 - MILLI_SEC_DELAY_TEST);
     printf("deviation = %lu\n", t2-t1 - MILLI_SEC_DELAY_TEST );
 }
 
-GTEST_TEST(ArduinoMockTest,MicrosDelay)
+GTEST_TEST(ArduinoMockTest,RealMicrosDelay)
 {
     long t1 = micros();
     long t2 = micros();
@@ -41,9 +42,44 @@ GTEST_TEST(ArduinoMockTest,MicrosDelay)
     t1 = micros();
     delayMicroseconds(MICRO_SEC_DELAY_TEST);
     t2 = micros();
+    EXPECT_LT(t1,t2);
     EXPECT_LE(MICRO_SEC_DELAY_TEST,t2-t1);
     EXPECT_GT(MICRO_SEC_DELAY_DEVIATION,t2-t1 - MICRO_SEC_DELAY_TEST);
     printf("deviation = %lu\n", t2-t1 - MICRO_SEC_DELAY_TEST );
+}
+
+GTEST_TEST(ArduinoMockTest,ManualMillisDelay)
+{
+    ArduinoMock::getInstance().setTimerMode(ArduinoMock::MANUAL_TIMER_HANDLING);
+
+    unsigned long t1 = millis();
+    unsigned long t2 = millis();
+    EXPECT_LE(t1,t2);
+
+    ArduinoMock::getInstance().setMilliSeconds(0);
+    t1 = millis();
+    EXPECT_EQ(0,t1);
+    ArduinoMock::getInstance().setMilliSeconds(187);
+    t2 = millis();
+    EXPECT_EQ(187,t2);
+    ArduinoMock::getInstance().setTimerMode(ArduinoMock::REAL_TIMER_HANDLING);
+}
+
+GTEST_TEST(ArduinoMockTest,ManualMicrosDelay)
+{
+    ArduinoMock::getInstance().setTimerMode(ArduinoMock::MANUAL_TIMER_HANDLING);
+
+    unsigned long t1 = micros();
+    unsigned long t2 = micros();
+    EXPECT_LE(t1,t2);
+
+    ArduinoMock::getInstance().setMicroSeconds(0);
+    t1 = micros();
+    EXPECT_EQ(0,t1);
+    ArduinoMock::getInstance().setMicroSeconds(278);
+    t2 = micros();
+    EXPECT_EQ(278,t2);
+    ArduinoMock::getInstance().setTimerMode(ArduinoMock::REAL_TIMER_HANDLING);
 }
 
 TEST(ArduinoMocktest,Map)

@@ -21,7 +21,7 @@
 #ifndef ARDUINO_MOCK_H
 #define ARDUINO_MOCK_H
 
-#include <cstdint>
+#include <stdint.h>
 #include <stdexcept>
 #include <sys/timeb.h>
 #include <sys/time.h>
