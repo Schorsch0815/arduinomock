@@ -19,6 +19,7 @@
  * --------------------------------------------------------------------*/
 
 #include "ArduinoMock.h"
+#include "ArduinoMockController.h"
 
 #undef min
 #undef max
@@ -32,43 +33,10 @@
 #else
 #endif
 
-using namespace std;
-
-ArduinoMock *ArduinoMock::mInstance = NULL;
-
-ArduinoMock::ArduinoMock() :
-        mTimerHandling( REAL_TIMER_HANDLING ),
-        mMicroSeconds( 0 ),
-        mMilliSeconds( 0 )
-{
-    initializeTimers();
-}
-
-ArduinoMock::~ArduinoMock()
-{
-    mInstance = NULL;
-}
-
-ArduinoMock & ArduinoMock::getInstance()
-{
-    if (NULL == mInstance)
-    {
-        mInstance = new ArduinoMock();
-    }
-
-    return *mInstance;
-}
-
-void ArduinoMock::initializeTimers()
-{
-    ftime( &mInitialTime );
-    gettimeofday( &mInitialTimeVal, NULL );
-}
-
 
 unsigned long millis()
 {
-    return ArduinoMock::getInstance().getMilliSeconds();
+    return ArduinoMockController::getInstance().getMilliSeconds();
 }
 
 void delay( unsigned long pMilliseconds )
@@ -87,7 +55,7 @@ void delay( unsigned long pMilliseconds )
 
 unsigned long micros()
 {
-    return ArduinoMock::getInstance().getMicroSeconds();
+    return ArduinoMockController::getInstance().getMicroSeconds();
 }
 
 void delayMicroseconds( unsigned long pMicroseconds )
