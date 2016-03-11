@@ -33,6 +33,7 @@
 #else
 #endif
 
+using namespace std;
 
 unsigned long millis()
 {

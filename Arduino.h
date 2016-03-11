@@ -24,6 +24,7 @@
 #include <cstdlib>
 
 #include "ArduinoMock.h"
+#include "ArduinoMockController.h"
 #include "SerialMock.h"
 
 

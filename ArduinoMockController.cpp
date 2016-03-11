@@ -18,12 +18,11 @@
  *
  * --------------------------------------------------------------------*/
 
-#include "ArduinoMock.h"
-
-#undef min
-#undef max
+#include "ArduinoMockController.h"
 
 #include <iostream>
+
+#include "Arduino.h"
 
 #if defined(WIN32)
 #include <windows.h>
@@ -37,7 +36,7 @@ using namespace std;
 ArduinoMockController *ArduinoMockController::mInstance = NULL;
 
 ArduinoMockController::ArduinoMockController() :
-        mTimerHandling( REAL_TIMER_HANDLING ),
+        mTimerMode( ArduinoMockController::REALTIME_TIMER_MODE ),
         mMicroSeconds( 0 ),
         mMilliSeconds( 0 )
 {
@@ -78,5 +77,70 @@ void ArduinoMockController::setPinMode( uint8_t pPinNumber, uint8_t pMode )
         throw range_error( "Range error: pMode is neither INPUT nor OUTPUT." );
     }
 
-    mPinMode[pPinNumber] = pPinMode;
+    mPinMode[pPinNumber] = pMode;
 }
+
+
+unsigned long ArduinoMockController::getMicroSeconds() const
+{
+    if (ArduinoMockController::REALTIME_TIMER_MODE == getTimerMode())
+    {
+        struct timeval lTimeVal;
+
+        if (gettimeofday( &lTimeVal, NULL ))
+        {
+            throw std::runtime_error( "Problem calling gettimeofday" );
+        }
+
+        return (lTimeVal.tv_sec - mInitialTimeVal.tv_sec) * 1000000 + (lTimeVal.tv_usec - mInitialTimeVal.tv_usec);
+    }
+    return mMicroSeconds;
+
+}
+
+
+unsigned long ArduinoMockController::getMilliSeconds() const
+{
+    if (ArduinoMockController::REALTIME_TIMER_MODE == getTimerMode())
+    {
+        timeb lCurrent;
+        ftime( &lCurrent );
+        return (lCurrent.time - mInitialTime.time) * 1000 + (lCurrent.millitm - mInitialTime.millitm);
+    }
+    return mMilliSeconds;
+}
+
+
+
+uint8_t ArduinoMockController::getPinMode( uint8_t pPinNumber )
+{
+    if (0 > pPinNumber || MAX_ARDUINO_PINS <= pPinNumber)
+    {
+        throw std::range_error( "Pin number is out of range.");
+    }
+
+    return mPinMode[pPinNumber];
+}
+
+
+void ArduinoMockController::setPinValue( uint8_t pPinNumber, int pValue )
+{
+    if (0 > pPinNumber || MAX_ARDUINO_PINS <= pPinNumber)
+    {
+        throw std::range_error( "Pin number is out of range.");
+    }
+
+    mPinValues[pPinNumber] = pValue;
+}
+
+
+int ArduinoMockController::getPinValue( uint8_t pPinNumber )
+{
+    if (0 > pPinNumber || MAX_ARDUINO_PINS <= pPinNumber)
+    {
+        throw std::range_error( "Pin number is out of range.");
+    }
+
+    return mPinValues[pPinNumber];
+}
+

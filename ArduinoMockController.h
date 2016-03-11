@@ -36,28 +36,34 @@ public:
 
     typedef enum
     {
-        REAL_TIMER_HANDLING,
-        MANUAL_TIMER_HANDLING
-    } TIMER_HANDLING;
+        REALTIME_TIMER_MODE,
+        MANUAL_TIMER_MODE
+    } TIMER_SIMULATION_MODE;
 
     typedef enum
     {
-        MANUAL_PIN_HANDLING
-    } PIN_HANDLING;
+        MANUAL_PIN_MODE
+    } PIN_SIMULATION_MODE;
 
-    void setTimerMode( TIMER_HANDLING pTimerHandling );
+    inline void setTimerMode( TIMER_SIMULATION_MODE pTimerMode );
 
-    TIMER_HANDLING getTimerHandling() const;
+    inline TIMER_SIMULATION_MODE getTimerMode() const;
 
     unsigned long getMicroSeconds() const;
 
-    void setMicroSeconds( unsigned long microSeconds );
+    inline void setMicroSeconds( unsigned long microSeconds );
 
     unsigned long getMilliSeconds() const;
 
-    void setMilliSeconds( unsigned long milliSeconds );
+    inline void setMilliSeconds( unsigned long milliSeconds );
+
+    inline void setPinSimulationMode( PIN_SIMULATION_MODE pPinSimulationMode );
+
+    inline PIN_SIMULATION_MODE getPinSimulationMode() const;
 
     void setPinMode( uint8_t pPinNumber, uint8_t pPinMode );
+
+    uint8_t getPinMode( uint8_t pPinNumber );
 
     void setPinValue( uint8_t pPinNumber, int pValue );
 
@@ -70,7 +76,7 @@ private:
 
     static ArduinoMockController *mInstance;
 
-    TIMER_HANDLING mTimerHandling;
+    TIMER_SIMULATION_MODE mTimerMode;
 
     unsigned long mMicroSeconds;
 
@@ -81,9 +87,9 @@ private:
     struct timeval mInitialTimeVal;
 
     /**
-     *  pin handling of the arduino mock class, at the moment only manual is supported
+     *  simulation mode of pins of the arduino mock class, at the moment only manual is supported
      */
-    PIN_HANDLING mPinHandling;
+    PIN_SIMULATION_MODE mPinSimulationMode;
 
     /**
      * holde the mode of each pin, could be INPUT or OUTPUT
@@ -99,33 +105,14 @@ private:
 
 
 
-void ArduinoMockController::setTimerMode( TIMER_HANDLING pTimerHandling )
+void ArduinoMockController::setTimerMode( TIMER_SIMULATION_MODE pTimerMode )
 {
-    mTimerHandling = pTimerHandling;
+    mTimerMode = pTimerMode;
 }
 
-TIMER_HANDLING ArduinoMockController::getTimerHandling() const
+ArduinoMockController::TIMER_SIMULATION_MODE ArduinoMockController::getTimerMode() const
 {
-    return mTimerHandling;
-}
-
-unsigned long ArduinoMockController::getMicroSeconds() const
-{
-    if (MANUAL_TIMER_HANDLING == getTimerHandling())
-    {
-        return mMicroSeconds;
-    }
-    else
-    {
-        struct timeval lTimeVal;
-
-        if (gettimeofday( &lTimeVal, NULL ))
-        {
-            throw std::runtime_error( "Problem calling gettimeofday" );
-        }
-
-        return (lTimeVal.tv_sec - mInitialTimeVal.tv_sec) * 1000000 + (lTimeVal.tv_usec - mInitialTimeVal.tv_usec);
-    }
+    return mTimerMode;
 }
 
 void ArduinoMockController::setMicroSeconds( unsigned long microSeconds )
@@ -133,23 +120,23 @@ void ArduinoMockController::setMicroSeconds( unsigned long microSeconds )
     mMicroSeconds = microSeconds;
 }
 
-unsigned long ArduinoMockController::getMilliSeconds() const
-{
-    if (MANUAL_TIMER_HANDLING == getTimerHandling())
-    {
-        return mMilliSeconds;
-    }
-    else
-    {
-        timeb lCurrent;
-        ftime( &lCurrent );
-        return (lCurrent.time - mInitialTime.time) * 1000 + (lCurrent.millitm - mInitialTime.millitm);
-    }
-}
-
 void ArduinoMockController::setMilliSeconds( unsigned long milliSeconds )
 {
     mMilliSeconds = milliSeconds;
 }
+
+
+void ArduinoMockController::setPinSimulationMode( PIN_SIMULATION_MODE pPinSimulationMode )
+{
+    mPinSimulationMode = pPinSimulationMode;
+}
+
+
+ArduinoMockController::PIN_SIMULATION_MODE ArduinoMockController::getPinSimulationMode() const
+{
+    return mPinSimulationMode;
+}
+
+
 
 #endif
