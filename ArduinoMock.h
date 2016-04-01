@@ -39,7 +39,24 @@ extern "C"{
 #define INPUT 0x0
 #define OUTPUT 0x1
 
+
+
 // some defines from Arduino.h
+#if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__) || defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
+#define DEFAULT ((uint_8) 0)
+#define EXTERNAL ((uint_8) 1)
+#define INTERNAL ((uint_8) 2)
+#else
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644__) || defined(__AVR_ATmega644A__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__)
+#define INTERNAL1V1 2
+#define INTERNAL2V56 3
+#else
+#define INTERNAL 3
+#endif
+#define DEFAULT 1U
+#define EXTERNAL 0
+#endif
+
 
 #ifdef min
 #undef min

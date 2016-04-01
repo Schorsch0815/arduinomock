@@ -33,29 +33,31 @@
 
 using namespace std;
 
-ArduinoMockController *ArduinoMockController::mInstance = NULL;
+ArduinoMockController ArduinoMockController::sInstance;
 
 ArduinoMockController::ArduinoMockController() :
         mTimerMode( ArduinoMockController::REALTIME_TIMER_MODE ),
         mMicroSeconds( 0 ),
-        mMilliSeconds( 0 )
+        mMilliSeconds( 0 ),
+        mPinSimulationMode( MANUAL_PIN_MODE ),
+        mAnalogReferenceMode( DEFAULT )
 {
     initializeTimers();
+
+    for (int i = 0; i < MAX_ARDUINO_PINS;++i)
+    {
+        mPinMode[i] = INPUT;
+        mPinValues[i] = 0;
+    }
 }
 
 ArduinoMockController::~ArduinoMockController()
 {
-    mInstance = NULL;
 }
 
 ArduinoMockController & ArduinoMockController::getInstance()
 {
-    if (NULL == mInstance)
-    {
-        mInstance = new ArduinoMockController();
-    }
-
-    return *mInstance;
+    return sInstance;
 }
 
 void ArduinoMockController::initializeTimers()
@@ -69,11 +71,12 @@ void ArduinoMockController::setPinMode( uint8_t pPinNumber, uint8_t pMode )
 {
     if (pPinNumber < 0 || pPinNumber >= MAX_ARDUINO_PINS)
     {
-        throw range_error( "Range error: pPinNUmber not in range of allowed pins of the ArduinoMock class." );
+        throw range_error( "Range error: pPinNumber not in range of allowed pins of the ArduinoMock class." );
     }
 
-    if (pMode != INPUT || pMode != OUTPUT)
+    if (pMode != INPUT && pMode != OUTPUT)
     {
+        std::cout << "pMode = " << (int) pMode << endl;
         throw range_error( "Range error: pMode is neither INPUT nor OUTPUT." );
     }
 
@@ -142,5 +145,16 @@ int ArduinoMockController::getPinValue( uint8_t pPinNumber )
     }
 
     return mPinValues[pPinNumber];
+}
+
+
+void ArduinoMockController::setAnalogReference( uint8_t pAnalogReferenceMode )
+{
+    if (0 > pAnalogReferenceMode || 4 <= pAnalogReferenceMode)
+    {
+        throw std::range_error( "analog reference mode is out of range.");
+    }
+
+    mAnalogReferenceMode = pAnalogReferenceMode;
 }
 

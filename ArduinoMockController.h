@@ -69,12 +69,16 @@ public:
 
     int getPinValue( uint8_t pPinNumber );
 
+    void setAnalogReference( uint8_t pAnalogReferenceMode );
+
+    uint8_t getAnalogReference() { return mAnalogReferenceMode; }
+
 private:
     ArduinoMockController();
 
     void initializeTimers();
 
-    static ArduinoMockController *mInstance;
+    static ArduinoMockController sInstance;
 
     TIMER_SIMULATION_MODE mTimerMode;
 
@@ -101,6 +105,11 @@ private:
      * the values less than 512 are interpreted as LOW and and all values above as HIGH
      */
     int mPinValues[MAX_ARDUINO_PINS];
+
+    /**
+     * holds analog reference mode see Arduino.h for possible values
+     */
+    int mAnalogReferenceMode;
 };
 
 

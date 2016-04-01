@@ -74,19 +74,19 @@ void delayMicroseconds( unsigned long pMicroseconds )
 #endif
 }
 
-void pinMode( uint8_t, uint8_t )
+void pinMode( uint8_t pPinNumber, uint8_t pPinMode)
 {
-
+    ArduinoMockController::getInstance().setPinMode(pPinNumber, pPinMode);
 }
 
-void digitalWrite( uint8_t, uint8_t )
+void digitalWrite( uint8_t pPinNumber, uint8_t pValue)
 {
-
+    ArduinoMockController::getInstance().setPinValue(pPinNumber, pValue);
 }
 
-void analogWrite( uint8_t, int )
+void analogWrite( uint8_t pPinNumber, int pValue )
 {
-
+    ArduinoMockController::getInstance().setPinValue(pPinNumber, pValue);
 }
 
 unsigned long pulseIn( uint8_t pin, uint8_t state, unsigned long timeout )
@@ -99,15 +99,6 @@ long map( long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh 
     long lDeltaFrom = pFromHigh - pFromLow;
     long lDeltaTo = pToHigh - pToLow;
 
-    if (pValue < pFromLow || pValue > pFromHigh)
-    {
-        throw range_error( "Range error: pValue is not between pFromLow and pFromHigh." );
-    }
-    if (0 > lDeltaTo)
-    {
-        // cerr << "(EE) Range of 'To' values is negative: " << lDeltaTo << endl;
-        throw range_error( "Range error: ToLow > ToHigh." );
-    }
     if (0 > lDeltaFrom)
     {
         // cerr << "(EE) Range of 'From' values is negative: " << lDeltaFrom << endl;
@@ -119,20 +110,36 @@ long map( long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh 
         throw runtime_error( "Division by zero." );
     }
 
+    if (pValue < pFromLow || pValue > pFromHigh)
+    {
+        throw range_error( "Range error: pValue is not between pFromLow and pFromHigh." );
+    }
+
+    if (0 > lDeltaTo)
+    {
+        // cerr << "(EE) Range of 'To' values is negative: " << lDeltaTo << endl;
+        throw range_error( "Range error: ToLow > ToHigh." );
+    }
+
     long lResult = (((double) pValue - pFromLow) * lDeltaTo / lDeltaFrom) + pToLow;
     return lResult;
 }
 
-int digitalRead( uint8_t )
+int digitalRead( uint8_t pPinNumber)
 {
-    return 0;
+    return ArduinoMockController::getInstance().getPinValue(pPinNumber);
 }
 
-int analogRead( uint8_t )
+int analogRead( uint8_t pPinNUmber)
 {
-    return 0;
+    return ArduinoMockController::getInstance().getPinValue(pPinNUmber);
 }
+
+/**
+ * type for analogReference
+ */
 
 void analogReference( uint8_t mode )
 {
+    ArduinoMockController::getInstance().setAnalogReference( mode );
 }

@@ -8,35 +8,20 @@
 					<extension id="org.eclipse.cdt.core.MakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.autotools.core.ErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 				<configuration artifactName="${ProjName}" buildProperties="" description="" id="it.baeyens.arduino.core.toolChain.release.464489377" name="Release" parent="org.eclipse.cdt.build.core.emptycfg">
 					<folderInfo id="it.baeyens.arduino.core.toolChain.release.464489377.526956969" name="/" resourcePath="">
-						<toolChain id="it.baeyens.arduino.core.toolChain.release.2049530040" name="Arduino Toolchain" superClass="it.baeyens.arduino.core.toolChain.release">
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="it.baeyens.arduino.targetplatform.1409368922" name="Arduino Target" osList="all" superClass="it.baeyens.arduino.targetplatform"/>
-							<builder buildPath="${workspace_loc:/arduinomock}/Release" id="it.baeyens.arduino.sketch.builder.1687635784" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Arduino sketch builder" superClass="it.baeyens.arduino.sketch.builder"/>
-							<tool id="it.baeyens.arduino.tool.sketch.compiler.cpp.1695978679" name="Arduino C++ Compiler" superClass="it.baeyens.arduino.tool.sketch.compiler.cpp">
-								<option id="it.baeyens.arduino.compiler.cpp.sketch.option.incpath.519204996" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.cpp.sketch.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduinomock/arduino/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduinomock/arduino/variant}&quot;"/>
-								</option>
-								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.1033512373" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
-							</tool>
-							<tool id="it.baeyens.arduino.tool.compiler.c.690940675" name="Arduino C Compiler" superClass="it.baeyens.arduino.tool.compiler.c">
-								<option id="it.baeyens.arduino.compiler.c.sketch.option.incpath.595589740" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.c.sketch.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduinomock/arduino/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduinomock/arduino/variant}&quot;"/>
-								</option>
-								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.1308793010" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
-							</tool>
-							<tool id="it.baeyens.arduino.tool.sketch.compiler.s.1512514812" name="Arduino Assembler" superClass="it.baeyens.arduino.tool.sketch.compiler.s"/>
-							<tool id="it.baeyens.arduino.tool.ar.1477832869" name="Arduino archiver" superClass="it.baeyens.arduino.tool.ar"/>
-							<tool id="it.baeyens.arduino.tool.combine.306578297" name="Arduino combiner" superClass="it.baeyens.arduino.tool.combine"/>
-							<tool id="it.baeyens.arduino.tool.objcopy.eep.1911577343" name="Arduino tool Create eeprom" superClass="it.baeyens.arduino.tool.objcopy.eep"/>
-							<tool id="it.baeyens.arduino.tool.objcopy.flash.466502666" name="Arduino tool Create hex" superClass="it.baeyens.arduino.tool.objcopy.flash"/>
-							<tool id="it.baeyens.arduino.tool.size.694333624" name="Arduino tool Print Size" superClass="it.baeyens.arduino.tool.size"/>
+						<toolChain id="it.baeyens.arduino.core.toolChain.release.2049530040" name="Arduino Toolchain">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="it.baeyens.arduino.targetplatform.1409368922" name="Arduino Target" osList="all"/>
+							<builder buildPath="${workspace_loc:/arduinomock}/Release" id="it.baeyens.arduino.sketch.builder.1687635784" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Arduino sketch builder"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
@@ -134,6 +119,7 @@
 								</option>
 								<option id="gnu.cpp.compiler.option.debugging.other.1320435506" name="Other debugging flags" superClass="gnu.cpp.compiler.option.debugging.other" value="-ftest-coverage -fprofile-arcs" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1657597925" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.optimization.level.1929865670" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.878519532" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.674045473" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
@@ -143,6 +129,8 @@
 								</option>
 								<option id="gnu.c.compiler.option.debugging.level.2052422130" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.debugging.other.1382474476" name="Other debugging flags" superClass="gnu.c.compiler.option.debugging.other" value="-ftest-coverage -fprofile-arcs" valueType="string"/>
+								<option id="gnu.c.compiler.option.dialect.std.316115088" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
+								<option id="gnu.c.compiler.option.optimization.level.879686644" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.785443933" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.424986397" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
@@ -156,6 +144,9 @@
 									<listOptionValue builtIn="false" value="pthread"/>
 									<listOptionValue builtIn="false" value="gcov"/>
 								</option>
+								<option id="gnu.cpp.link.option.flags.54358030" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-ftest-coverage -fprofile-arcs" valueType="string"/>
+								<option id="gnu.cpp.link.option.other.1823596191" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" valueType="stringList"/>
+								<option id="gnu.cpp.link.option.userobjs.368477859" name="Other objects" superClass="gnu.cpp.link.option.userobjs" valueType="userObjs"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.997036313" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -163,6 +154,25 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.base.1389412805" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.209714779" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<folderInfo id="it.baeyens.arduino.core.toolChain.release.464489377.647123653.1095956810.2084197899" name="/" resourcePath="GcovUnittests">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.base.1581575415" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base" unusedChildren="">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1215061282" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.665075501"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.898010593" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.2071249104">
+								<option id="gnu.cpp.compiler.option.dialect.std.1920142327" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.default" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.optimization.level.133804279" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.147707164" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.164849901" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.674045473">
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.132966946" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1367480710" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base.424986397"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.1476300084" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base.1584883915"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.base.1054841836" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base.1389412805">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1716019707" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
@@ -200,5 +210,6 @@
 		<configuration configurationName="Unittests Debug">
 			<resource resourceType="PROJECT" workspacePath="/arduinomock"/>
 		</configuration>
+		<configuration configurationName="GcovUnittests"/>
 	</storageModule>
 </cproject>
