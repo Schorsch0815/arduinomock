@@ -34,6 +34,8 @@ public:
     ~ArduinoMockController();
     static ArduinoMockController & getInstance();
 
+    void reset();
+
     typedef enum
     {
         REALTIME_TIMER_MODE,
@@ -76,7 +78,7 @@ public:
 private:
     ArduinoMockController();
 
-    void initializeTimers();
+    void initTimeHandling();
 
     static ArduinoMockController sInstance;
 
@@ -117,6 +119,7 @@ private:
 void ArduinoMockController::setTimerMode( TIMER_SIMULATION_MODE pTimerMode )
 {
     mTimerMode = pTimerMode;
+    initTimeHandling();
 }
 
 ArduinoMockController::TIMER_SIMULATION_MODE ArduinoMockController::getTimerMode() const

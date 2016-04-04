@@ -49,6 +49,7 @@ SerialMock::~SerialMock()
 void SerialMock::begin( unsigned long )
 {
 }
+
 void SerialMock::begin( unsigned long, uint8_t )
 {
 }
@@ -246,7 +247,7 @@ void SerialMock::determineShftAndMask( int pBase,
         case DEC:
             break;
         default:
-            throw std::exception();
+            throw std::range_error("given base is out of range, not in {2,8,10,16}");
     }
 }
 

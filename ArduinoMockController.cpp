@@ -42,7 +42,20 @@ ArduinoMockController::ArduinoMockController() :
         mPinSimulationMode( MANUAL_PIN_MODE ),
         mAnalogReferenceMode( DEFAULT )
 {
-    initializeTimers();
+    reset();
+}
+
+ArduinoMockController::~ArduinoMockController()
+{
+}
+
+void ArduinoMockController::reset()
+{
+    mTimerMode = ArduinoMockController::REALTIME_TIMER_MODE;
+    initTimeHandling();
+
+    mPinSimulationMode = MANUAL_PIN_MODE;
+    mAnalogReferenceMode = DEFAULT;
 
     for (int i = 0; i < MAX_ARDUINO_PINS;++i)
     {
@@ -51,19 +64,31 @@ ArduinoMockController::ArduinoMockController() :
     }
 }
 
-ArduinoMockController::~ArduinoMockController()
-{
-}
-
 ArduinoMockController & ArduinoMockController::getInstance()
 {
     return sInstance;
 }
 
-void ArduinoMockController::initializeTimers()
+void ArduinoMockController::initTimeHandling()
 {
-    ftime( &mInitialTime );
-    gettimeofday( &mInitialTimeVal, NULL );
+    mMicroSeconds = 0;
+    mMilliSeconds = 0;
+
+    if (REALTIME_TIMER_MODE == getTimerMode())
+    {
+        ftime( &mInitialTime );
+        gettimeofday( &mInitialTimeVal, NULL );
+    }
+    else
+    {
+        mInitialTime.time = 0;
+        mInitialTime.millitm = 0;
+        mInitialTime.timezone = 0;
+        mInitialTime.dstflag = 0;
+
+        mInitialTimeVal.tv_sec = 0;
+        mInitialTimeVal.tv_usec = 0;
+    }
 }
 
 
