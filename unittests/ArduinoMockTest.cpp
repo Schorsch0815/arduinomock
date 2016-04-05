@@ -12,7 +12,7 @@
 
 using namespace std;
 
-static unsigned long MILLI_SEC_DELAY_TEST = 500;
+static unsigned long MILLI_SEC_DELAY_TEST = 200;
 static unsigned long MILLI_SEC_DELAY_DEVIATION = 5;
 
 static unsigned long MICRO_SEC_DELAY_TEST = 900;
@@ -31,7 +31,7 @@ protected:
     }
 };
 
-GTEST_TEST(ArduinoMockTest,RealMillisDelay)
+TEST_F(ArduinoMockTest,RealMillisDelay)
 {
     unsigned long t1 = millis();
     unsigned long t2 = millis();
@@ -46,7 +46,7 @@ GTEST_TEST(ArduinoMockTest,RealMillisDelay)
     printf( "deviation = %lu\n", t2 - t1 - MILLI_SEC_DELAY_TEST );
 }
 
-GTEST_TEST(ArduinoMockTest,RealMicrosDelay)
+TEST_F(ArduinoMockTest,RealMicrosDelay)
 {
     long t1 = micros();
     long t2 = micros();
@@ -61,7 +61,7 @@ GTEST_TEST(ArduinoMockTest,RealMicrosDelay)
     printf( "deviation = %lu\n", t2 - t1 - MICRO_SEC_DELAY_TEST );
 }
 
-GTEST_TEST(ArduinoMockTest,ManualMillisDelay)
+TEST_F(ArduinoMockTest,ManualMillisDelay)
 {
     ArduinoMockController::getInstance().setTimerMode( ArduinoMockController::MANUAL_TIMER_MODE );
 
@@ -78,7 +78,7 @@ GTEST_TEST(ArduinoMockTest,ManualMillisDelay)
     ArduinoMockController::getInstance().setTimerMode( ArduinoMockController::REALTIME_TIMER_MODE );
 }
 
-GTEST_TEST(ArduinoMockTest,ManualMicrosDelay)
+TEST_F(ArduinoMockTest,ManualMicrosDelay)
 {
     ArduinoMockController::getInstance().setTimerMode( ArduinoMockController::MANUAL_TIMER_MODE );
 
@@ -95,7 +95,7 @@ GTEST_TEST(ArduinoMockTest,ManualMicrosDelay)
     ArduinoMockController::getInstance().setTimerMode( ArduinoMockController::REALTIME_TIMER_MODE );
 }
 
-TEST(ArduinoMockControllertest,Map)
+TEST_F(ArduinoMockTest,Map)
 {
     EXPECT_EQ( 0, map( 50, 50, 100, 0, 5 ) );
 
@@ -118,7 +118,7 @@ TEST(ArduinoMockControllertest,Map)
     EXPECT_THROW( map( 0, 0, 0, 0, 10 ), runtime_error );
 }
 
-TEST(ArduinoMockControllertest,PinValue)
+TEST_F(ArduinoMockTest,PinValue)
 {
     ArduinoMockController::getInstance().setPinSimulationMode( ArduinoMockController::MANUAL_PIN_MODE );
     EXPECT_THROW( ArduinoMockController::getInstance().setPinValue( -1, 0 ), range_error );
@@ -128,7 +128,7 @@ TEST(ArduinoMockControllertest,PinValue)
     EXPECT_THROW( ArduinoMockController::getInstance().getPinValue( 255 ), range_error );
 }
 
-TEST(ArduinoMockControllertest,DigitalRead)
+TEST_F(ArduinoMockTest,DigitalRead)
 {
     ArduinoMockController::getInstance().setPinSimulationMode( ArduinoMockController::MANUAL_PIN_MODE );
     ArduinoMockController::getInstance().setPinValue( 0, 0 );
@@ -142,28 +142,28 @@ TEST(ArduinoMockControllertest,DigitalRead)
     EXPECT_EQ( -5, digitalRead( 10 ) );
 }
 
-TEST(ArduinoMockControllertest,DigitalWrite)
+TEST_F(ArduinoMockTest,DigitalWrite)
 {
     digitalWrite( 0, 0 );
     digitalWrite( 10, 0 );
     digitalWrite( 20, 0 );
 }
 
-TEST(ArduinoMockControllertest,AnalogRead)
+TEST_F(ArduinoMockTest,AnalogRead)
 {
     EXPECT_EQ( 0, analogRead( 0 ) );
     EXPECT_EQ( 0, analogRead( 10 ) );
     EXPECT_EQ( 0, analogRead( 20 ) );
 }
 
-TEST(ArduinoMockControllertest,AnalogWrite)
+TEST_F(ArduinoMockTest,AnalogWrite)
 {
     analogWrite( 0, 0 );
     analogWrite( 10, 0 );
     analogWrite( 20, 0 );
 }
 
-TEST(ArduinoMockControllertest,PinMode)
+TEST_F(ArduinoMockTest,PinMode)
 {
     pinMode( 0, 0 );
     EXPECT_EQ( ArduinoMockController::getInstance().getPinMode( 0 ), 0 );
@@ -190,14 +190,14 @@ TEST(ArduinoMockControllertest,PinMode)
     EXPECT_THROW( ArduinoMockController::getInstance().getPinMode( 255 ), range_error );
 }
 
-TEST(ArduinoMockControllertest,PulseIn)
+TEST_F(ArduinoMockTest,PulseIn)
 {
     EXPECT_EQ( 0, pulseIn( 0, 0, 100 ) );
     EXPECT_EQ( 0, pulseIn( 10, 0, 100 ) );
     EXPECT_EQ( 0, pulseIn( 20, 0, 100 ) );
 }
 
-TEST(ArduinoMockControllertest,AnalogReference)
+TEST_F(ArduinoMockTest,AnalogReference)
 {
     analogReference( DEFAULT );
     EXPECT_EQ( ArduinoMockController::getInstance().getAnalogReference(), DEFAULT );
