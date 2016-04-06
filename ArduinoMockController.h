@@ -30,9 +30,9 @@ class ArduinoMockController
 {
     static const unsigned short MAX_ARDUINO_PINS = 32;
 
-public:
+  public:
     ~ArduinoMockController();
-    static ArduinoMockController & getInstance();
+    static ArduinoMockController &getInstance();
 
     void reset();
 
@@ -53,11 +53,15 @@ public:
 
     unsigned long getMicroSeconds() const;
 
-    inline void setMicroSeconds( unsigned long microSeconds );
+    void setMicroSeconds( unsigned long pMicroSeconds );
 
     unsigned long getMilliSeconds() const;
 
-    inline void setMilliSeconds( unsigned long milliSeconds );
+    void setMilliSeconds( unsigned long pMilliSeconds );
+
+    void delay( unsigned long pMilliSeconds );
+
+    void delayMicroSeconds( unsigned long pMicroSeconds );
 
     inline void setPinSimulationMode( PIN_SIMULATION_MODE pPinSimulationMode );
 
@@ -75,7 +79,7 @@ public:
 
     uint8_t getAnalogReference() { return mAnalogReferenceMode; }
 
-private:
+  private:
     ArduinoMockController();
 
     void initTimeHandling();
@@ -114,41 +118,22 @@ private:
     int mAnalogReferenceMode;
 };
 
-
-
 void ArduinoMockController::setTimerMode( TIMER_SIMULATION_MODE pTimerMode )
 {
     mTimerMode = pTimerMode;
     initTimeHandling();
 }
 
-ArduinoMockController::TIMER_SIMULATION_MODE ArduinoMockController::getTimerMode() const
-{
-    return mTimerMode;
-}
-
-void ArduinoMockController::setMicroSeconds( unsigned long microSeconds )
-{
-    mMicroSeconds = microSeconds;
-}
-
-void ArduinoMockController::setMilliSeconds( unsigned long milliSeconds )
-{
-    mMilliSeconds = milliSeconds;
-}
-
+ArduinoMockController::TIMER_SIMULATION_MODE ArduinoMockController::getTimerMode() const { return mTimerMode; }
 
 void ArduinoMockController::setPinSimulationMode( PIN_SIMULATION_MODE pPinSimulationMode )
 {
     mPinSimulationMode = pPinSimulationMode;
 }
 
-
 ArduinoMockController::PIN_SIMULATION_MODE ArduinoMockController::getPinSimulationMode() const
 {
     return mPinSimulationMode;
 }
-
-
 
 #endif

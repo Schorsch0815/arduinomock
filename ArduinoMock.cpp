@@ -42,16 +42,7 @@ unsigned long millis()
 
 void delay( unsigned long pMilliseconds )
 {
-#if defined(WIN32)
-    SetLastError(0);
-    Sleep(pMilliseconds);
-    cerr << "Windows error:" << (GetLastError() ? -1 : 0) << endl;
-#elif defined(__linux__)
-    usleep(1000 * pMilliseconds);
-#else
-#error ("no milli sleep available for current platform")
-    return;
-#endif
+    ArduinoMockController::getInstance().delay( pMilliseconds );
 }
 
 unsigned long micros()
@@ -59,34 +50,24 @@ unsigned long micros()
     return ArduinoMockController::getInstance().getMicroSeconds();
 }
 
-void delayMicroseconds( unsigned long pMicroseconds )
+void delayMicroseconds( unsigned long pMicroSeconds )
 {
-#if 0 //defined(WIN32)
-    SetLastError(0);
-    Sleep(ms);
-    cerr << "Windows error:" << (GetLastError() ? -1 : 0) << endl;
-#endif
-#if defined(__linux__)
-    usleep(pMicroseconds);
-#else
-#error ("no micro sleep available for platform")
-    return;
-#endif
+    ArduinoMockController::getInstance().delayMicroSeconds( pMicroSeconds );
 }
 
-void pinMode( uint8_t pPinNumber, uint8_t pPinMode)
+void pinMode( uint8_t pPinNumber, uint8_t pPinMode )
 {
-    ArduinoMockController::getInstance().setPinMode(pPinNumber, pPinMode);
+    ArduinoMockController::getInstance().setPinMode( pPinNumber, pPinMode );
 }
 
-void digitalWrite( uint8_t pPinNumber, uint8_t pValue)
+void digitalWrite( uint8_t pPinNumber, uint8_t pValue )
 {
-    ArduinoMockController::getInstance().setPinValue(pPinNumber, pValue);
+    ArduinoMockController::getInstance().setPinValue( pPinNumber, pValue );
 }
 
 void analogWrite( uint8_t pPinNumber, int pValue )
 {
-    ArduinoMockController::getInstance().setPinValue(pPinNumber, pValue);
+    ArduinoMockController::getInstance().setPinValue( pPinNumber, pValue );
 }
 
 unsigned long pulseIn( uint8_t pin, uint8_t state, unsigned long timeout )
@@ -125,14 +106,14 @@ long map( long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh 
     return lResult;
 }
 
-int digitalRead( uint8_t pPinNumber)
+int digitalRead( uint8_t pPinNumber )
 {
-    return ArduinoMockController::getInstance().getPinValue(pPinNumber);
+    return ArduinoMockController::getInstance().getPinValue( pPinNumber );
 }
 
-int analogRead( uint8_t pPinNUmber)
+int analogRead( uint8_t pPinNUmber )
 {
-    return ArduinoMockController::getInstance().getPinValue(pPinNUmber);
+    return ArduinoMockController::getInstance().getPinValue( pPinNUmber );
 }
 
 /**
