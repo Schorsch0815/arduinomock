@@ -28,9 +28,17 @@
 
 class ArduinoMockController
 {
+  public:
     static const unsigned short MAX_ARDUINO_PINS = 32;
 
-  public:
+    static const int DIGITAL_LOW_HIGH_LIMIT = 650;
+
+    static const int ANALOG_MIN_VALUE = 0;
+    static const int ANALOG_MAX_VALUE = 1023;
+
+    static const int PULSE_MIN_VALUE = 50;
+    static const int PULSE_MAX_VALUE = 1500;
+
     ~ArduinoMockController();
     static ArduinoMockController &getInstance();
 
@@ -71,9 +79,13 @@ class ArduinoMockController
 
     uint8_t getPinMode( uint8_t pPinNumber );
 
-    void setPinValue( uint8_t pPinNumber, int pValue );
+    void setDigitalValue( uint8_t pPinNumber, int pValue );
+    void setAnalogValue( uint8_t pPinNumber, int pValue );
+    void setPulseValue( uint8_t pPinNumber, int pValue );
 
-    int getPinValue( uint8_t pPinNumber );
+    int getDigitalValue( uint8_t pPinNumber );
+    int getAnalogValue( uint8_t pPinNumber );
+    int getPulseValue( uint8_t pPinNumber, uint8_t pState, unsigned long pTimeout );
 
     void setAnalogReference( uint8_t pAnalogReferenceMode );
 
@@ -83,6 +95,10 @@ class ArduinoMockController
     ArduinoMockController();
 
     void initTimeHandling();
+
+    void setPinValue( uint8_t pPinNumber, int pValue );
+
+    int getPinValue( uint8_t pPinNumber );
 
     static ArduinoMockController sInstance;
 
@@ -108,9 +124,14 @@ class ArduinoMockController
 
     /**
      * hold values of the arduino pins (values 0-1023). If pin is interpreted as digital
-     * the values less than 512 are interpreted as LOW and and all values above as HIGH
+     * the values less than 630 are interpreted as LOW and and all values above as HIGH
      */
     int mPinValues[MAX_ARDUINO_PINS];
+
+    /**
+     * hold values of the arduino pins if used with pulseIn. The default range is [1, 1500] default value is 750
+     */
+    int mPulseValues[MAX_ARDUINO_PINS];
 
     /**
      * holds analog reference mode see Arduino.h for possible values

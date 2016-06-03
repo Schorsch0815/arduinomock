@@ -27,6 +27,4 @@
 #include "ArduinoMockController.h"
 #include "SerialMock.h"
 
-
-
 #endif /* ARDUINO_H_ */

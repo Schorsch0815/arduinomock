@@ -60,6 +60,7 @@ void ArduinoMockController::reset()
     {
         mPinMode[i] = INPUT;
         mPinValues[i] = 0;
+        mPulseValues[i] = (PULSE_MAX_VALUE + PULSE_MIN_VALUE) / 2;
     }
 }
 
@@ -182,9 +183,9 @@ void ArduinoMockController::delayMicroSeconds( unsigned long pMicroSeconds )
     if ( ArduinoMockController::REALTIME_TIMER_MODE == getTimerMode() )
     {
 #if 0 // defined(WIN32)
-        SetLastError(0);
-        Sleep(ms);
-        cerr << "Windows error:" << (GetLastError() ? -1 : 0) << endl;
+		SetLastError(0);
+		Sleep(ms);
+		cerr << "Windows error:" << (GetLastError() ? -1 : 0) << endl;
 #endif
 #if defined( __linux__ )
         usleep( pMicroSeconds );
@@ -207,6 +208,58 @@ uint8_t ArduinoMockController::getPinMode( uint8_t pPinNumber )
     }
 
     return mPinMode[pPinNumber];
+}
+
+void ArduinoMockController::setPulseValue( uint8_t pPinNumber, int pValue )
+{
+    if ( 0 > pPinNumber || MAX_ARDUINO_PINS <= pPinNumber )
+    {
+        throw std::range_error( "Pin number is out of range." );
+    }
+
+    if ( PULSE_MIN_VALUE > pValue || PULSE_MAX_VALUE < pValue )
+    {
+        throw std::range_error( "The value for pulse value is out of range." );
+    }
+
+    mPulseValues[pPinNumber] = pValue;
+}
+
+void ArduinoMockController::setDigitalValue( uint8_t pPinNumber, int pValue )
+{
+    if ( LOW > pValue || HIGH < pValue )
+    {
+        throw std::range_error( "The value for digital pin is out of range. Expects LOW or HIGH" );
+    }
+
+    setPinValue( pPinNumber, ( LOW == pValue ) ? ANALOG_MIN_VALUE : ANALOG_MAX_VALUE );
+}
+
+void ArduinoMockController::setAnalogValue( uint8_t pPinNumber, int pValue )
+{
+    if ( ANALOG_MIN_VALUE > pValue || ANALOG_MAX_VALUE < pValue )
+    {
+        throw std::range_error( "The value for analog pin is out of range. Expects vlues between 0 and 1023" );
+    }
+
+    setPinValue( pPinNumber, pValue );
+}
+
+int ArduinoMockController::getDigitalValue( uint8_t pPinNumber )
+{
+    return ( DIGITAL_LOW_HIGH_LIMIT > getPinValue( pPinNumber ) ? LOW : HIGH );
+}
+
+int ArduinoMockController::getAnalogValue( uint8_t pPinNumber ) { return getPinValue( pPinNumber ); }
+
+int ArduinoMockController::getPulseValue( uint8_t pPinNumber, uint8_t, unsigned long )
+{
+    if ( 0 > pPinNumber || MAX_ARDUINO_PINS <= pPinNumber )
+    {
+        throw std::range_error( "Pin number is out of range." );
+    }
+
+    return mPulseValues[pPinNumber];
 }
 
 void ArduinoMockController::setPinValue( uint8_t pPinNumber, int pValue )
