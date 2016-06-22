@@ -34,6 +34,8 @@
 
 using namespace std;
 
+const int ArduinoMockController::PULSE_NEUTRAL_VALUE = (ArduinoMockController::PULSE_MAX_VALUE + ArduinoMockController::PULSE_MIN_VALUE) / 2;
+
 ArduinoMockController ArduinoMockController::sInstance;
 
 ArduinoMockController::ArduinoMockController()
@@ -60,7 +62,7 @@ void ArduinoMockController::reset()
     {
         mPinMode[i] = INPUT;
         mPinValues[i] = 0;
-        mPulseValues[i] = (PULSE_MAX_VALUE + PULSE_MIN_VALUE) / 2;
+        mPulseValues[i] = PULSE_NEUTRAL_VALUE;
     }
 }
 

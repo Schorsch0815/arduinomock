@@ -254,7 +254,7 @@ TEST_F( ArduinoMockTest, PinMode )
 
 TEST_F( ArduinoMockTest, PulseIn )
 {
-    EXPECT_EQ( (ArduinoMockController::PULSE_MAX_VALUE + ArduinoMockController::PULSE_MIN_VALUE) / 2, pulseIn( 0, LOW, 100 ) );
+    EXPECT_EQ( ArduinoMockController::PULSE_NEUTRAL_VALUE, pulseIn( 0, LOW, 100 ) );
 
     ArduinoMockController::getInstance().setPulseValue(10,50);
     EXPECT_EQ( 50, pulseIn( 10, HIGH, 100 ) );

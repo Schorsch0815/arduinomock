@@ -39,6 +39,8 @@ class ArduinoMockController
     static const int PULSE_MIN_VALUE = 50;
     static const int PULSE_MAX_VALUE = 1500;
 
+    static const int PULSE_NEUTRAL_VALUE;
+
     ~ArduinoMockController();
     static ArduinoMockController &getInstance();
 
