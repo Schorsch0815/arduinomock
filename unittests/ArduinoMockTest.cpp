@@ -20,10 +20,15 @@ static unsigned long MICRO_SEC_DELAY_DEVIATION = 300;
 
 class ArduinoMockTest : public ::testing::Test
 {
-  protected:
-    virtual void SetUp() { ArduinoMockController::getInstance().reset(); }
+protected:
+    virtual void SetUp()
+    {
+        ArduinoMockController::getInstance().reset();
+    }
 
-    virtual void TearDown() {}
+    virtual void TearDown()
+    {
+    }
 };
 
 TEST_F( ArduinoMockTest, RealMillisDelay )
@@ -256,25 +261,27 @@ TEST_F( ArduinoMockTest, PulseIn )
 {
     EXPECT_EQ( ArduinoMockController::PULSE_NEUTRAL_VALUE, pulseIn( 0, LOW, 100 ) );
 
-    ArduinoMockController::getInstance().setPulseValue(10,50);
+    ArduinoMockController::getInstance().setPulseValue( 10, 50 );
     EXPECT_EQ( 50, pulseIn( 10, HIGH, 100 ) );
 
-    ArduinoMockController::getInstance().setPulseValue(20,1500);
+    ArduinoMockController::getInstance().setPulseValue( 20, 1500 );
     EXPECT_EQ( 1500, pulseIn( 20, LOW, 100 ) );
 
-    ArduinoMockController::getInstance().setPulseValue(20,1500);
+    ArduinoMockController::getInstance().setPulseValue( 20, 1500 );
     EXPECT_EQ( 1500, pulseIn( 20, HIGH, 100 ) );
 
-    EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue(33,500), range_error);
+    EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue( 33, 500 ), range_error );
 
-    EXPECT_THROW( pulseIn(33,LOW,1000), range_error);
-    EXPECT_THROW( pulseIn(-1,LOW,1000), range_error);
+    EXPECT_THROW( pulseIn( 33, LOW, 1000 ), range_error );
+    EXPECT_THROW( pulseIn( -1, LOW, 1000 ), range_error );
 
-    EXPECT_THROW( pulseIn(33,-1,1000), range_error);
-    EXPECT_THROW( pulseIn(-1,30,1000), range_error);
+    EXPECT_THROW( pulseIn( 33, -1, 1000 ), range_error );
+    EXPECT_THROW( pulseIn( -1, 30, 1000 ), range_error );
 
-    EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue(0,ArduinoMockController::PULSE_MIN_VALUE - 1), range_error);
-    EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue(0,ArduinoMockController::PULSE_MAX_VALUE + 1), range_error);
+    EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue( 0, ArduinoMockController::PULSE_MIN_VALUE - 1 ),
+                  range_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue( 0, ArduinoMockController::PULSE_MAX_VALUE + 1 ),
+                  range_error );
 }
 
 TEST_F( ArduinoMockTest, AnalogReference )

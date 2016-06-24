@@ -34,7 +34,8 @@
 
 using namespace std;
 
-const int ArduinoMockController::PULSE_NEUTRAL_VALUE = (ArduinoMockController::PULSE_MAX_VALUE + ArduinoMockController::PULSE_MIN_VALUE) / 2;
+const int ArduinoMockController::PULSE_NEUTRAL_VALUE
+    = ( ArduinoMockController::PULSE_MAX_VALUE + ArduinoMockController::PULSE_MIN_VALUE ) / 2;
 
 ArduinoMockController ArduinoMockController::sInstance;
 
@@ -48,7 +49,9 @@ ArduinoMockController::ArduinoMockController()
     reset();
 }
 
-ArduinoMockController::~ArduinoMockController() {}
+ArduinoMockController::~ArduinoMockController()
+{
+}
 
 void ArduinoMockController::reset()
 {
@@ -66,7 +69,10 @@ void ArduinoMockController::reset()
     }
 }
 
-ArduinoMockController &ArduinoMockController::getInstance() { return sInstance; }
+ArduinoMockController &ArduinoMockController::getInstance()
+{
+    return sInstance;
+}
 
 void ArduinoMockController::initTimeHandling()
 {
@@ -252,7 +258,10 @@ int ArduinoMockController::getDigitalValue( uint8_t pPinNumber )
     return ( DIGITAL_LOW_HIGH_LIMIT > getPinValue( pPinNumber ) ? LOW : HIGH );
 }
 
-int ArduinoMockController::getAnalogValue( uint8_t pPinNumber ) { return getPinValue( pPinNumber ); }
+int ArduinoMockController::getAnalogValue( uint8_t pPinNumber )
+{
+    return getPinValue( pPinNumber );
+}
 
 int ArduinoMockController::getPulseValue( uint8_t pPinNumber, uint8_t, unsigned long )
 {

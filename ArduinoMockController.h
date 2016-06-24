@@ -28,7 +28,7 @@
 
 class ArduinoMockController
 {
-  public:
+public:
     static const unsigned short MAX_ARDUINO_PINS = 32;
 
     static const int DIGITAL_LOW_HIGH_LIMIT = 650;
@@ -91,9 +91,12 @@ class ArduinoMockController
 
     void setAnalogReference( uint8_t pAnalogReferenceMode );
 
-    uint8_t getAnalogReference() { return mAnalogReferenceMode; }
+    uint8_t getAnalogReference()
+    {
+        return mAnalogReferenceMode;
+    }
 
-  private:
+private:
     ArduinoMockController();
 
     void initTimeHandling();
@@ -147,7 +150,10 @@ void ArduinoMockController::setTimerMode( TIMER_SIMULATION_MODE pTimerMode )
     initTimeHandling();
 }
 
-ArduinoMockController::TIMER_SIMULATION_MODE ArduinoMockController::getTimerMode() const { return mTimerMode; }
+ArduinoMockController::TIMER_SIMULATION_MODE ArduinoMockController::getTimerMode() const
+{
+    return mTimerMode;
+}
 
 void ArduinoMockController::setPinSimulationMode( PIN_SIMULATION_MODE pPinSimulationMode )
 {

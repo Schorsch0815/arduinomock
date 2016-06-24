@@ -35,11 +35,20 @@
 
 using namespace std;
 
-unsigned long millis() { return ArduinoMockController::getInstance().getMilliSeconds(); }
+unsigned long millis()
+{
+    return ArduinoMockController::getInstance().getMilliSeconds();
+}
 
-void delay( unsigned long pMilliseconds ) { ArduinoMockController::getInstance().delay( pMilliseconds ); }
+void delay( unsigned long pMilliseconds )
+{
+    ArduinoMockController::getInstance().delay( pMilliseconds );
+}
 
-unsigned long micros() { return ArduinoMockController::getInstance().getMicroSeconds(); }
+unsigned long micros()
+{
+    return ArduinoMockController::getInstance().getMicroSeconds();
+}
 
 void delayMicroseconds( unsigned long pMicroSeconds )
 {
@@ -102,12 +111,21 @@ long map( long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh 
     return lResult;
 }
 
-int digitalRead( uint8_t pPinNumber ) { return ArduinoMockController::getInstance().getDigitalValue( pPinNumber ); }
+int digitalRead( uint8_t pPinNumber )
+{
+    return ArduinoMockController::getInstance().getDigitalValue( pPinNumber );
+}
 
-int analogRead( uint8_t pPinNUmber ) { return ArduinoMockController::getInstance().getAnalogValue( pPinNUmber ); }
+int analogRead( uint8_t pPinNUmber )
+{
+    return ArduinoMockController::getInstance().getAnalogValue( pPinNUmber );
+}
 
 /**
  * type for analogReference
  */
 
-void analogReference( uint8_t mode ) { ArduinoMockController::getInstance().setAnalogReference( mode ); }
+void analogReference( uint8_t mode )
+{
+    ArduinoMockController::getInstance().setAnalogReference( mode );
+}

@@ -26,28 +26,27 @@
 #include <sys/timeb.h>
 #include <sys/time.h>
 
-
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif
 
 // need to be adapted according arduino settings
-#define HIGH	0x1
-#define LOW		0x0
-
+#define HIGH 0x1
+#define LOW 0x0
 
 #define INPUT 0x0
 #define OUTPUT 0x1
 
-
-
 // some defines from Arduino.h
-#if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__) || defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
-#define DEFAULT ((uint_8) 0)
-#define EXTERNAL ((uint_8) 1)
-#define INTERNAL ((uint_8) 2)
+#if defined( __AVR_ATtiny24__ ) || defined( __AVR_ATtiny44__ ) || defined( __AVR_ATtiny84__ )                          \
+    || defined( __AVR_ATtiny25__ ) || defined( __AVR_ATtiny45__ ) || defined( __AVR_ATtiny85__ )
+#define DEFAULT ( (uint_8)0 )
+#define EXTERNAL ( (uint_8)1 )
+#define INTERNAL ( (uint_8)2 )
 #else
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644__) || defined(__AVR_ATmega644A__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__)
+#if defined( __AVR_ATmega1280__ ) || defined( __AVR_ATmega2560__ ) || defined( __AVR_ATmega1284__ )                    \
+    || defined( __AVR_ATmega1284P__ ) || defined( __AVR_ATmega644__ ) || defined( __AVR_ATmega644A__ )                 \
+    || defined( __AVR_ATmega644P__ ) || defined( __AVR_ATmega644PA__ )
 #define INTERNAL1V1 2
 #define INTERNAL2V56 3
 #else
@@ -57,52 +56,51 @@ extern "C"{
 #define EXTERNAL 0
 #endif
 
-
 #ifdef min
 #undef min
 #endif
-#define min(a,b) ((a)<(b)?(a):(b))
+#define min( a, b ) ( ( a ) < ( b ) ? ( a ) : ( b ) )
 
 #ifndef max
 #undef max
 #endif
-#define max(a,b) ((a)>(b)?(a):(b))
+#define max( a, b ) ( ( a ) > ( b ) ? ( a ) : ( b ) )
 
 typedef int myint_t;
 
-#define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
-#define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
-#define radians(deg) ((deg)*DEG_TO_RAD)
-#define degrees(rad) ((rad)*RAD_TO_DEG)
-#define sq(x) ((x)*(x))
+#define constrain( amt, low, high ) ( ( amt ) < ( low ) ? ( low ) : ( ( amt ) > ( high ) ? ( high ) : ( amt ) ) )
+#define round( x ) ( ( x ) >= 0 ? (long)( ( x ) + 0.5 ) : (long)( (x)-0.5 ) )
+#define radians( deg ) ( (deg)*DEG_TO_RAD )
+#define degrees( rad ) ( (rad)*RAD_TO_DEG )
+#define sq( x ) ( ( x ) * ( x ) )
 
-#define lowByte(w) ((uint8_t) ((w) & 0xff))
-#define highByte(w) ((uint8_t) ((w) >> 8))
+#define lowByte( w ) ( ( uint8_t )( (w)&0xff ) )
+#define highByte( w ) ( ( uint8_t )( ( w ) >> 8 ) )
 
-#define bitRead(value, bit) (((value) >> (bit)) & 0x01)
-#define bitSet(value, bit) ((value) |= (1UL << (bit)))
-#define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
-#define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
+#define bitRead( value, bit ) ( ( ( value ) >> ( bit ) ) & 0x01 )
+#define bitSet( value, bit ) ( ( value ) |= ( 1UL << ( bit ) ) )
+#define bitClear( value, bit ) ( ( value ) &= ~( 1UL << ( bit ) ) )
+#define bitWrite( value, bit, bitvalue ) ( bitvalue ? bitSet( value, bit ) : bitClear( value, bit ) )
 
 typedef unsigned int word;
 
 typedef unsigned char boolean;
 typedef unsigned char byte;
 
-void pinMode(uint8_t, uint8_t);
-void digitalWrite(uint8_t, uint8_t);
-int digitalRead(uint8_t);
-int analogRead(uint8_t);
-void analogReference(uint8_t mode);
-void analogWrite(uint8_t, int);
+void pinMode( uint8_t, uint8_t );
+void digitalWrite( uint8_t, uint8_t );
+int digitalRead( uint8_t );
+int analogRead( uint8_t );
+void analogReference( uint8_t mode );
+void analogWrite( uint8_t, int );
 
 unsigned long millis();
 unsigned long micros();
-void delay(unsigned long pMilliseconds);
-void delayMicroseconds(unsigned long pMicroseconds);
-unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
+void delay( unsigned long pMilliseconds );
+void delayMicroseconds( unsigned long pMicroseconds );
+unsigned long pulseIn( uint8_t pin, uint8_t state, unsigned long timeout );
 
-long map(long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh);
+long map( long pValue, long pFromLow, long pFromHigh, long pToLow, long pToHigh );
 
 #ifdef __cplusplus
 } // extern C

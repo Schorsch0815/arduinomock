@@ -25,7 +25,10 @@
 
 enum
 {
-    DEC = 10, HEX = 16, OCT = 8, BIN = 2
+    DEC = 10,
+    HEX = 16,
+    OCT = 8,
+    BIN = 2
 };
 
 // Define config for Serial.begin(baud, config);
@@ -54,7 +57,6 @@ enum
 #define SERIAL_7O2 0x3C
 #define SERIAL_8O2 0x3E
 
-
 class SerialMock
 {
 public:
@@ -62,51 +64,51 @@ public:
 
     virtual ~SerialMock();
 
-    void begin(unsigned long);
-    void begin(unsigned long, uint8_t);
+    void begin( unsigned long );
+    void begin( unsigned long, uint8_t );
 
     void end();
 
-    virtual int available(void);
+    virtual int available( void );
 
-    virtual int peek(void);
+    virtual int peek( void );
 
-    virtual int read(void);
+    virtual int read( void );
 
     // not supported yet
     // int availableForWrite(void);
 
-    virtual void flush(void);
+    virtual void flush( void );
 
-//    virtual size_t write(uint8_t);
-//
-//    size_t write(unsigned long n);
-//    size_t write(long n);
-//    size_t write(unsigned int n);
-//    size_t write(int n);
+    //    virtual size_t write(uint8_t);
+    //
+    //    size_t write(unsigned long n);
+    //    size_t write(long n);
+    //    size_t write(unsigned int n);
+    //    size_t write(int n);
 
-//    size_t print(const String &);
-    size_t print(const char[]);
-    size_t print(char);
-    size_t print(unsigned char, int = DEC);
-    size_t print(int, int = DEC);
-    size_t print(unsigned int, int = DEC);
-    size_t print(long, int = DEC);
-    size_t print(unsigned long, int = DEC);
-    size_t print(double, int = 2);
-//    size_t print(const Printable&);
+    //    size_t print(const String &);
+    size_t print( const char[] );
+    size_t print( char );
+    size_t print( unsigned char, int = DEC );
+    size_t print( int, int = DEC );
+    size_t print( unsigned int, int = DEC );
+    size_t print( long, int = DEC );
+    size_t print( unsigned long, int = DEC );
+    size_t print( double, int = 2 );
+    //    size_t print(const Printable&);
 
-//    size_t println(const String &s);
-    size_t println(const char[]);
-    size_t println(char);
-    size_t println(unsigned char, int = DEC);
-    size_t println(int, int = DEC);
-    size_t println(unsigned int, int = DEC);
-    size_t println(long, int = DEC);
-    size_t println(unsigned long, int = DEC);
-    size_t println(double, int = 2);
-//    size_t println(const Printable&);
-    size_t println(void);
+    //    size_t println(const String &s);
+    size_t println( const char[] );
+    size_t println( char );
+    size_t println( unsigned char, int = DEC );
+    size_t println( int, int = DEC );
+    size_t println( unsigned int, int = DEC );
+    size_t println( long, int = DEC );
+    size_t println( unsigned long, int = DEC );
+    size_t println( double, int = 2 );
+    //    size_t println(const Printable&);
+    size_t println( void );
 
     operator bool()
     {
@@ -114,19 +116,18 @@ public:
     }
 
 private:
-    size_t print(long pNumber, int pBase, int pNumBits, bool pNewLine);
-    size_t print(unsigned long pNumber, int pBase, int pNumBits, bool pNewLine);
+    size_t print( long pNumber, int pBase, int pNumBits, bool pNewLine );
+    size_t print( unsigned long pNumber, int pBase, int pNumBits, bool pNewLine );
 
-    char convertDigit(int lValue);
+    char convertDigit( int lValue );
 
-    char *convertNumber(unsigned long pNumber, int pBase, int pNumBits, char *pBuffer, bool pNewLine);
-    void determineShftAndMask(int pBase, unsigned int& lShift,
-                              unsigned long & lMask);
+    char *convertNumber( unsigned long pNumber, int pBase, int pNumBits, char *pBuffer, bool pNewLine );
+    void determineShftAndMask( int pBase, unsigned int &lShift, unsigned long &lMask );
 
-    static const int NUMBER_OF_BITS_FOR_LONG = sizeof(long) * 8;
-    static const int NUMBER_OF_BITS_FOR_INT = sizeof(int) * 8;
-    static const int NUMBER_OF_BITS_FOR_SHORT = sizeof(short) * 8;
-    static const int NUMBER_OF_BITS_FOR_CHAR = sizeof(char) * 8;
+    static const int NUMBER_OF_BITS_FOR_LONG = sizeof( long ) * 8;
+    static const int NUMBER_OF_BITS_FOR_INT = sizeof( int ) * 8;
+    static const int NUMBER_OF_BITS_FOR_SHORT = sizeof( short ) * 8;
+    static const int NUMBER_OF_BITS_FOR_CHAR = sizeof( char ) * 8;
 };
 
 extern SerialMock Serial;
