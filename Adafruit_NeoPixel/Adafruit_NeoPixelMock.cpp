@@ -12,6 +12,11 @@
 
 using namespace std;
 
+namespace adafruit
+{
+#include "/home/jochen/gitRepo/Adafruit_NeoPixel/Adafruit_NeoPixel.cpp"
+}
+
 Adafruit_NeoPixel::Adafruit_NeoPixel( uint16_t pNumberOfLeds, uint8_t pPinNumber, uint8_t pStripType )
     : adafruit::Adafruit_NeoPixel( pNumberOfLeds, pPinNumber, pStripType )
 {

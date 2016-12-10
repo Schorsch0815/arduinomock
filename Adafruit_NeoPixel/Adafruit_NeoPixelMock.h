@@ -23,10 +23,15 @@
 #define ADAFRUIT_NEOPIXELMOCK_H
 
 #include "Arduino.h"
+#include <memory.h>
+
+void noInterrupts();
+
+void interrupts();
 
 namespace adafruit
 {
-#include "RealAdafruit_NeoPixel/Adafruit_NeoPixel.h"
+#include "/home/jochen/gitRepo/Adafruit_NeoPixel/Adafruit_NeoPixel.h"
 };
 
 

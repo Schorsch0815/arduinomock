@@ -10,7 +10,9 @@
 #include <iostream>
 #include "../Arduino.h"
 
-using namespace std;
+//using namespace std;
+
+#include <exception>
 
 static unsigned long MILLI_SEC_DELAY_TEST = 200;
 static unsigned long MILLI_SEC_DELAY_DEVIATION = 5;
@@ -45,7 +47,7 @@ TEST_F( ArduinoMockTest, RealMillisDelay )
     EXPECT_GT( MILLI_SEC_DELAY_DEVIATION, t2 - t1 - MILLI_SEC_DELAY_TEST );
     printf( "deviation = %lu\n", t2 - t1 - MILLI_SEC_DELAY_TEST );
 
-    EXPECT_THROW( ArduinoMockController::getInstance().setMilliSeconds( 0 ), logic_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().setMilliSeconds( 0 ), std::logic_error );
 }
 
 TEST_F( ArduinoMockTest, RealMicrosDelay )
@@ -62,7 +64,7 @@ TEST_F( ArduinoMockTest, RealMicrosDelay )
     EXPECT_GT( MICRO_SEC_DELAY_DEVIATION, t2 - t1 - MICRO_SEC_DELAY_TEST );
     printf( "deviation = %lu\n", t2 - t1 - MICRO_SEC_DELAY_TEST );
 
-    EXPECT_THROW( ArduinoMockController::getInstance().setMicroSeconds( 0 ), logic_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().setMicroSeconds( 0 ), std::logic_error );
 }
 
 TEST_F( ArduinoMockTest, ManualMillisDelay )
@@ -129,23 +131,23 @@ TEST_F( ArduinoMockTest, Map )
 
     EXPECT_EQ( 5, map( 99, 0, 99, 0, 5 ) );
 
-    EXPECT_THROW( map( -10, 0, 100, -100, 80 ), range_error );
+    EXPECT_THROW( map( -10, 0, 100, -100, 80 ), std::range_error );
 
-    EXPECT_THROW( map( 1, 10, 0, 0, 10 ), range_error );
+    EXPECT_THROW( map( 1, 10, 0, 0, 10 ), std::range_error );
 
-    EXPECT_THROW( map( 1, 0, 10, 10, 0 ), range_error );
+    EXPECT_THROW( map( 1, 0, 10, 10, 0 ), std::range_error );
 
-    EXPECT_THROW( map( 0, 0, 0, 0, 10 ), runtime_error );
+    EXPECT_THROW( map( 0, 0, 0, 0, 10 ), std::runtime_error );
 }
 
 TEST_F( ArduinoMockTest, DigitalPinValue )
 {
     ArduinoMockController::getInstance().setPinSimulationMode( ArduinoMockController::MANUAL_PIN_MODE );
-    EXPECT_THROW( ArduinoMockController::getInstance().setDigitalValue( -1, 0 ), range_error );
-    EXPECT_THROW( ArduinoMockController::getInstance().setDigitalValue( 255, 0 ), range_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().setDigitalValue( -1, 0 ), std::range_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().setDigitalValue( 255, 0 ), std::range_error );
 
-    EXPECT_THROW( ArduinoMockController::getInstance().getDigitalValue( -1 ), range_error );
-    EXPECT_THROW( ArduinoMockController::getInstance().getDigitalValue( 255 ), range_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().getDigitalValue( -1 ), std::range_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().getDigitalValue( 255 ), std::range_error );
 }
 
 TEST_F( ArduinoMockTest, DigitalRead )
@@ -162,8 +164,8 @@ TEST_F( ArduinoMockTest, DigitalRead )
     ArduinoMockController::getInstance().setAnalogValue( 0, ArduinoMockController::DIGITAL_LOW_HIGH_LIMIT );
     EXPECT_EQ( HIGH, digitalRead( 0 ) );
 
-    EXPECT_THROW( digitalRead( -5 ), range_error );
-    EXPECT_THROW( digitalRead( 32 ), range_error );
+    EXPECT_THROW( digitalRead( -5 ), std::range_error );
+    EXPECT_THROW( digitalRead( 32 ), std::range_error );
 }
 
 TEST_F( ArduinoMockTest, DigitalWrite )
@@ -178,11 +180,11 @@ TEST_F( ArduinoMockTest, DigitalWrite )
     EXPECT_EQ( LOW, digitalRead( 20 ) );
     EXPECT_EQ( LOW, ArduinoMockController::getInstance().getDigitalValue( 20 ) );
 
-    EXPECT_THROW( digitalWrite( 10, 255 ), range_error );
-    EXPECT_THROW( digitalWrite( 10, -5 ), range_error );
+    EXPECT_THROW( digitalWrite( 10, 255 ), std::range_error );
+    EXPECT_THROW( digitalWrite( 10, -5 ), std::range_error );
 
-    EXPECT_THROW( digitalWrite( -1, HIGH ), range_error );
-    EXPECT_THROW( digitalWrite( 33, LOW ), range_error );
+    EXPECT_THROW( digitalWrite( -1, HIGH ), std::range_error );
+    EXPECT_THROW( digitalWrite( 33, LOW ), std::range_error );
 }
 
 TEST_F( ArduinoMockTest, AnalogRead )
@@ -202,8 +204,8 @@ TEST_F( ArduinoMockTest, AnalogRead )
     ArduinoMockController::getInstance().setAnalogValue( 10, 1023 );
     EXPECT_EQ( 1023, analogRead( 10 ) );
 
-    EXPECT_THROW( analogRead( -1 ), range_error );
-    EXPECT_THROW( analogRead( 33 ), range_error );
+    EXPECT_THROW( analogRead( -1 ), std::range_error );
+    EXPECT_THROW( analogRead( 33 ), std::range_error );
 }
 
 TEST_F( ArduinoMockTest, AnalogWrite )
@@ -223,11 +225,11 @@ TEST_F( ArduinoMockTest, AnalogWrite )
     analogWrite( 10, 1023 );
     EXPECT_EQ( 1023, analogRead( 10 ) );
 
-    EXPECT_THROW( analogWrite( 10, 1024 ), range_error );
-    EXPECT_THROW( analogWrite( 10, -5 ), range_error );
+    EXPECT_THROW( analogWrite( 10, 1024 ), std::range_error );
+    EXPECT_THROW( analogWrite( 10, -5 ), std::range_error );
 
-    EXPECT_THROW( analogWrite( -1, 0 ), range_error );
-    EXPECT_THROW( analogWrite( 33, 0 ), range_error );
+    EXPECT_THROW( analogWrite( -1, 0 ), std::range_error );
+    EXPECT_THROW( analogWrite( 33, 0 ), std::range_error );
 }
 
 TEST_F( ArduinoMockTest, PinMode )
@@ -246,15 +248,15 @@ TEST_F( ArduinoMockTest, PinMode )
     EXPECT_EQ( ArduinoMockController::getInstance().getPinMode( 20 ), 1 );
 
     // now the range tests for pin number
-    EXPECT_THROW( pinMode( -1, 0 ), range_error );
-    EXPECT_THROW( pinMode( 255, 0 ), range_error );
+    EXPECT_THROW( pinMode( -1, 0 ), std::range_error );
+    EXPECT_THROW( pinMode( 255, 0 ), std::range_error );
 
     // now the range tests for pin mode
-    EXPECT_THROW( pinMode( 0, -1 ), range_error );
-    EXPECT_THROW( pinMode( 0, 2 ), range_error );
+    EXPECT_THROW( pinMode( 0, -1 ), std::range_error );
+    EXPECT_THROW( pinMode( 0, 2 ), std::range_error );
 
-    EXPECT_THROW( ArduinoMockController::getInstance().getPinMode( -1 ), range_error );
-    EXPECT_THROW( ArduinoMockController::getInstance().getPinMode( 255 ), range_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().getPinMode( -1 ), std::range_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().getPinMode( 255 ), std::range_error );
 }
 
 TEST_F( ArduinoMockTest, PulseIn )
@@ -270,18 +272,18 @@ TEST_F( ArduinoMockTest, PulseIn )
     ArduinoMockController::getInstance().setPulseValue( 20, 1500 );
     EXPECT_EQ( 1500, pulseIn( 20, HIGH, 100 ) );
 
-    EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue( 33, 500 ), range_error );
+    EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue( 33, 500 ), std::range_error );
 
-    EXPECT_THROW( pulseIn( 33, LOW, 1000 ), range_error );
-    EXPECT_THROW( pulseIn( -1, LOW, 1000 ), range_error );
+    EXPECT_THROW( pulseIn( 33, LOW, 1000 ), std::range_error );
+    EXPECT_THROW( pulseIn( -1, LOW, 1000 ), std::range_error );
 
-    EXPECT_THROW( pulseIn( 33, -1, 1000 ), range_error );
-    EXPECT_THROW( pulseIn( -1, 30, 1000 ), range_error );
+    EXPECT_THROW( pulseIn( 33, -1, 1000 ), std::range_error );
+    EXPECT_THROW( pulseIn( -1, 30, 1000 ), std::range_error );
 
     EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue( 0, ArduinoMockController::PULSE_MIN_VALUE - 1 ),
-                  range_error );
+                  std::range_error );
     EXPECT_THROW( ArduinoMockController::getInstance().setPulseValue( 0, ArduinoMockController::PULSE_MAX_VALUE + 1 ),
-                  range_error );
+                  std::range_error );
 }
 
 TEST_F( ArduinoMockTest, AnalogReference )
@@ -293,5 +295,5 @@ TEST_F( ArduinoMockTest, AnalogReference )
     analogReference( INTERNAL );
     EXPECT_EQ( ArduinoMockController::getInstance().getAnalogReference(), INTERNAL );
 
-    EXPECT_THROW( analogReference( 11 ), range_error );
+    EXPECT_THROW( analogReference( 11 ), std::range_error );
 }

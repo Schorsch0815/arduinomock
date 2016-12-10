@@ -129,3 +129,11 @@ void analogReference( uint8_t mode )
 {
     ArduinoMockController::getInstance().setAnalogReference( mode );
 }
+
+void noInterrupts()
+{
+}
+
+void interrupts()
+{
+}

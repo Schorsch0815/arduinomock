@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+environment/project/cdt.managedbuild.config.gnu.exe.debug.908497121/GTEST_PATH/delimiter=\:
+environment/project/cdt.managedbuild.config.gnu.exe.debug.908497121/GTEST_PATH/operation=replace
+environment/project/cdt.managedbuild.config.gnu.exe.debug.908497121/GTEST_PATH/value=/usr/local/include
+environment/project/cdt.managedbuild.config.gnu.exe.debug.908497121/append=true
+environment/project/cdt.managedbuild.config.gnu.exe.debug.908497121/appendContributed=true

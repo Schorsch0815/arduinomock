@@ -8,7 +8,7 @@
 #include "gtest/gtest.h"
 
 #include <iostream>
-#include "../Adafruit_NeoPixel/Adafruit_NeoPixel.h"
+#include "Adafruit_NeoPixel/Adafruit_NeoPixel.h"
 
 using namespace std;
 
@@ -25,7 +25,7 @@ protected:
     }
 };
 
-TEST_F(Adafruit_NeoPixelMockTest, ionitialization)
+TEST_F(Adafruit_NeoPixelMockTest, initialization)
 {
 	Adafruit_NeoPixel neo(3,1);
 
